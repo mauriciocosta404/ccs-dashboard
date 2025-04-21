@@ -18,16 +18,21 @@ import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import LandigPage from "./pages/home";
+import { Fragment } from "react/jsx-runtime";
+import PublicRoute from "./routes/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute";
 
 export default function App() {
   return (
-    <>
+    <Fragment>
       <Router>
         <ScrollToTop />
         <Routes>
+          <Route index path="/landing-page" element={<LandigPage />} />
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<Home />} />
+            <Route path="/" element={<PrivateRoute  children={<Home />}/>} />
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
@@ -54,13 +59,13 @@ export default function App() {
           </Route>
 
           {/* Auth Layout */}
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<PublicRoute children={<SignIn />}  />} />
+          <Route path="/signup" element={<PublicRoute children={<SignUp />} />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </>
+    </Fragment>
   );
 }

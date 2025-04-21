@@ -1,14 +1,45 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
+import { toast } from "react-toastify";
+import httpClient from "../../api/httpClient";
+import useAuth from "../../auth/useAuth";
 
 export default function SignInForm() {
+  const { loginUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [email, setEmail] = useState(""); // <-- estado para email
+  const [password, setPassword] = useState(""); // <-- estado para senha
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await httpClient.post("/auth/login", {
+        email,
+        senha: password,
+      });
+
+      const token = response.data?.accessToken;
+      const user = response.data?.user;
+      if (token) {
+        localStorage.setItem("accessToken", token);
+        toast.success("Login efetuado com sucesso!");
+        loginUser(user); 
+        navigate("/"); 
+      } else {
+        toast.error("Token não recebido. Verifique com o backend.");
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Falha ao fazer login.");
+    }
+  };
+  
   return (
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
@@ -83,13 +114,17 @@ export default function SignInForm() {
                 </span>
               </div>
             </div>
-            <form>
+            <form onSubmit={handleLogin}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input 
+                    placeholder="info@gmail.com" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label>
@@ -99,6 +134,8 @@ export default function SignInForm() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}

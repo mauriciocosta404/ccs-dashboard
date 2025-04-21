@@ -280,6 +280,37 @@ layer(base);
   background-color: #344054;
 }
 
+/* Estilização geral do scroll */
+::-webkit-scrollbar {
+  width: 10px; /* Largura da barra vertical */
+  height: 10px; /* Altura da barra horizontal */
+}
+
+/* Track (fundo da barra) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+/* Handle (parte móvel) */
+::-webkit-scrollbar-thumb {
+  background: #4f46e5; 
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Handle hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #4f46e5; 
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4f46e5 #f1f1f1;
+}
+
 @layer utilities {
   /* For Remove Date Icon */
   input[type="date"]::-webkit-inner-spin-button,
