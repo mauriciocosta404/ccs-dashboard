@@ -22,50 +22,63 @@ import LandigPage from "./pages/home";
 import { Fragment } from "react/jsx-runtime";
 import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
+import { useState } from "react";
+import SplashScreen from "./components/common/SplashScreen";
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
   return (
     <Fragment>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route index path="/landing-page" element={<LandigPage />} />
-          {/* Dashboard Layout */}
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<PrivateRoute  children={<Home />}/>} />
+      {showSplash && (
+        <SplashScreen 
+          duration={2000} 
+          onAnimationComplete={() => setShowSplash(false)} 
+        />
+      )}
+      
+      {!showSplash && 
+      
+        (<Router>
+          <ScrollToTop />
+          <Routes>
+            <Route index path="/landing-page" element={<LandigPage />} />
+            {/* Dashboard Layout */}
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<PrivateRoute  children={<Home />}/>} />
 
-            {/* Others Page */}
-            <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/blank" element={<Blank />} />
+              {/* Others Page */}
+              <Route path="/profile" element={<UserProfiles />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/blank" element={<Blank />} />
 
-            {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
+              {/* Forms */}
+              <Route path="/form-elements" element={<FormElements />} />
 
-            {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
+              {/* Tables */}
+              <Route path="/basic-tables" element={<BasicTables />} />
 
-            {/* Ui Elements */}
-            <Route path="/alerts" element={<Alerts />} />
-            <Route path="/avatars" element={<Avatars />} />
-            <Route path="/badge" element={<Badges />} />
-            <Route path="/buttons" element={<Buttons />} />
-            <Route path="/images" element={<Images />} />
-            <Route path="/videos" element={<Videos />} />
+              {/* Ui Elements */}
+              <Route path="/alerts" element={<Alerts />} />
+              <Route path="/avatars" element={<Avatars />} />
+              <Route path="/badge" element={<Badges />} />
+              <Route path="/buttons" element={<Buttons />} />
+              <Route path="/images" element={<Images />} />
+              <Route path="/videos" element={<Videos />} />
 
-            {/* Charts */}
-            <Route path="/line-chart" element={<LineChart />} />
-            <Route path="/bar-chart" element={<BarChart />} />
-          </Route>
+              {/* Charts */}
+              <Route path="/line-chart" element={<LineChart />} />
+              <Route path="/bar-chart" element={<BarChart />} />
+            </Route>
 
-          {/* Auth Layout */}
-          <Route path="/signin" element={<PublicRoute children={<SignIn />}  />} />
-          <Route path="/signup" element={<PublicRoute children={<SignUp />} />} />
+            {/* Auth Layout */}
+            <Route path="/signin" element={<PublicRoute children={<SignIn />}  />} />
+            <Route path="/signup" element={<PublicRoute children={<SignUp />} />} />
 
-          {/* Fallback Route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+            {/* Fallback Route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>)
+      }
     </Fragment>
   );
 }
