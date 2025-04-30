@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
@@ -17,11 +17,14 @@ export default function SignInForm() {
   const [password, setPassword] = useState(""); // <-- estado para senha
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [desable, setDesable] = useState<boolean>(true);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       setLoading(true);
+      setDesable(true);
       const response = await httpClient.post("/auth/login", {
         email,
         senha: password,
@@ -37,12 +40,18 @@ export default function SignInForm() {
       } else {
         toast.error("Token não recebido. Verifique com o backend.");
       }
+      setDesable(false);
       setLoading(false);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Falha ao fazer login.");
       setLoading(false);
+      setDesable(false);
     }
   };
+
+  useEffect(()=>{ 
+    setDesable((email != "" && password != "") ? false : true);
+    }, [email, password, desable])
   
   return (
     <div className="flex flex-col flex-1">
@@ -169,7 +178,7 @@ export default function SignInForm() {
                 </div>
                 <div>
                   <Button 
-                    disabled={loading}
+                    disabled={desable}
                     size="sm"
                     className={`w-full ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
                     >
