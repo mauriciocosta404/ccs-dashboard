@@ -10,8 +10,11 @@ export async function login(email: string, senha: string) {
 }
 
 export function logout() {
+  // Limpa tudo relacionado à autenticação
   localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken'); // Se existir
   localStorage.removeItem('user');
+  sessionStorage.removeItem('auth'); // Se existir
 }
 
 export function getUser() {

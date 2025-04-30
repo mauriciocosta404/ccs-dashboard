@@ -25,7 +25,7 @@ export default function AuthLayout({
                 />
               </Link>
               <p className="text-center text-gray-400 dark:text-white/60">
-                Free and Open-Source Tailwind CSS Admin Dashboard Template
+                Bem-vindo ao  portal Cenáculo da salvação, A Olaria de Deus
               </p>
             </div>
           </div>

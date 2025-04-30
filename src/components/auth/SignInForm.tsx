@@ -16,10 +16,12 @@ export default function SignInForm() {
   const [email, setEmail] = useState(""); // <-- estado para email
   const [password, setPassword] = useState(""); // <-- estado para senha
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await httpClient.post("/auth/login", {
         email,
         senha: password,
@@ -35,8 +37,10 @@ export default function SignInForm() {
       } else {
         toast.error("Token não recebido. Verifique com o backend.");
       }
+      setLoading(false);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Falha ao fazer login.");
+      setLoading(false);
     }
   };
   
@@ -164,8 +168,12 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
-                    Sign in
+                  <Button 
+                    disabled={loading}
+                    size="sm"
+                    className={`w-full ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+                    >
+                      {loading ? "Processing..." : " Sign in"}
                   </Button>
                 </div>
               </div>
