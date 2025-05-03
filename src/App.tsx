@@ -38,7 +38,7 @@ export default function App() {
       
       {!showSplash && 
       
-        (<Router>
+        (<Router  basename="/">
           <ScrollToTop />
           <Routes>
             <Route index path="/" element={<LandigPage />} />
