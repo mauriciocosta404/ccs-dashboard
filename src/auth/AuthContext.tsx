@@ -1,12 +1,12 @@
 import { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { User } from '../types/User';
-import { getUser, getToken, logout as destroySession } from './authService';
+import { getUser, getToken, logout as destroySession, login as saveSession } from './authService';
 
 interface AuthContextProps {
   user: User | null;
   isAuthenticated: boolean;
-  loginUser: (user: User) => void;
-  logout: () => Promise<void>; // Alterado para Promise
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
@@ -26,13 +26,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const loginUser = (userData: User) => {
-    setUser(userData);
+  const login = useCallback(async (email: string, password: string) => {
+    const { /*accessToken,*/ user } = await saveSession(email, password);
+    setUser(user);
     setIsAuthenticated(true);
-  };
+  }, []);
 
   const logout = useCallback(async () => {
-    destroySession();
+    await destroySession();
     setUser(null);
     setIsAuthenticated(false);
   }, []);
@@ -58,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [logout]);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loginUser, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

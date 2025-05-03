@@ -1,4 +1,5 @@
 import httpClient from '../api/httpClient';
+import { User } from '../types/User';
 
 export async function login(email: string, senha: string) {
   const response = await httpClient.post('/auth/login', { email, senha });
@@ -10,18 +11,15 @@ export async function login(email: string, senha: string) {
 }
 
 export function logout() {
-  // Limpa tudo relacionado à autenticação
   localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken'); // Se existir
   localStorage.removeItem('user');
-  sessionStorage.removeItem('auth'); // Se existir
 }
 
-export function getUser() {
+export function getUser(): User | null {
   const user = localStorage.getItem('user');
   return user ? JSON.parse(user) : null;
 }
 
-export function getToken() {
+export function getToken(): string | null {
   return localStorage.getItem('accessToken');
 }
