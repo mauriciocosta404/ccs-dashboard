@@ -41,14 +41,14 @@ export default function App() {
         (<Router>
           <ScrollToTop />
           <Routes>
-            <Route index path="/landing-page" element={<LandigPage />} />
+            <Route index path="/" element={<LandigPage />} />
             {/* Dashboard Layout */}
             <Route element={<AppLayout />}>
-              <Route path="/" element={<PrivateRoute  children={<Home />}/>} />
+              <Route path="/dashboard" element={<PrivateRoute  children={<Home />}/>} />
 
               {/* Others Page */}
-              <Route path="/profile" element={<UserProfiles />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/profile/:userId" element={<PrivateRoute  children={<UserProfiles />}/>}/>
+              <Route path="/calendar" element={<PrivateRoute  children={<Calendar />}/>} />
               <Route path="/blank" element={<Blank />} />
 
               {/* Forms */}

@@ -3,14 +3,56 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import { User } from "../../types/User";
+import { toast } from "react-toastify";
+import httpClient from "../../api/httpClient";
+import { useState } from "react";
 
-export default function UserInfoCard() {
+type UserInfoCardProps = {
+  user: User;
+  onUpdate?: (updatedUser: User) => void;
+};
+
+export default function UserInfoCard({ user, onUpdate }: UserInfoCardProps) {
   const { isOpen, openModal, closeModal } = useModal();
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
+
+  const [formData, setFormData] = useState<Partial<User>>({
+    name: user.name,
+    email: user.email,
+    phone: user.phone || '',
+    bio: user.bio || '',
+    facebook: user.facebook || '',
+    twitter: user.twitter || '',
+    linkedin: user.linkedin || '',
+    instagram: user.instagram || '',
+    city: user.city || '',
+    role: user.role
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    try {
+      const response = await httpClient.patch(`/users/${user.id}`, formData);
+      toast.success("Perfil atualizado com sucesso!");
+      if (onUpdate) {
+        onUpdate(response.data);
+      }
+      closeModal();
+    } catch (error) {
+      toast.error("Erro ao atualizar perfil");
+      console.error("Erro ao atualizar usuário:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -22,19 +64,10 @@ export default function UserInfoCard() {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Primeiro Nome
+                Nome Completo
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Tia
-              </p>
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Último nome
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Candeia
+                {user.name || 'Não informado'}
               </p>
             </div>
 
@@ -43,7 +76,7 @@ export default function UserInfoCard() {
                 Email address
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
+              {user.email}
               </p>
             </div>
 
@@ -52,7 +85,7 @@ export default function UserInfoCard() {
                 Phone
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
+              {user.phone || 'Não informado'}
               </p>
             </div>
 
@@ -61,7 +94,7 @@ export default function UserInfoCard() {
                 Bio
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Team Manager
+              {user.bio || 'Não informado'}
               </p>
             </div>
           </div>
@@ -100,7 +133,7 @@ export default function UserInfoCard() {
               Update your details to keep your profile up-to-date.
             </p>
           </div>
-          <form className="flex flex-col">
+          <form className="flex flex-col" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
               <div>
                 <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
@@ -112,26 +145,44 @@ export default function UserInfoCard() {
                     <Label>Facebook</Label>
                     <Input
                       type="text"
-                      value="https://www.facebook.com/PimjoHQ"
+                      name="facebook"
+                      value={formData.facebook || ""}
+                      onChange={handleInputChange}
+                      placeholder="https://www.facebook.com/seu-perfil"
                     />
                   </div>
 
                   <div>
                     <Label>X.com</Label>
-                    <Input type="text" value="https://x.com/PimjoHQ" />
+                    <Input 
+                      type="text" 
+                      name="twitter"
+                      value={formData.twitter || ""}
+                      onChange={handleInputChange}
+                      placeholder="https://x.com/seu-perfil" 
+                    />
                   </div>
 
                   <div>
                     <Label>Linkedin</Label>
                     <Input
                       type="text"
-                      value="https://www.linkedin.com/company/pimjo"
+                      name="linkedin"
+                      value={formData.linkedin || ""}
+                      onChange={handleInputChange}
+                      placeholder="https://www.linkedin.com/in/seu-perfil"
                     />
                   </div>
 
                   <div>
                     <Label>Instagram</Label>
-                    <Input type="text" value="https://instagram.com/PimjoHQ" />
+                    <Input 
+                      type="text" 
+                      name="instagram"
+                      value={formData.instagram || ""}
+                      onChange={handleInputChange}
+                      placeholder="https://instagram.com/seu-perfil" 
+                    />
                   </div>
                 </div>
               </div>
@@ -141,39 +192,74 @@ export default function UserInfoCard() {
                 </h5>
 
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>First Name</Label>
-                    <Input type="text" value="Musharof" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Last Name</Label>
-                    <Input type="text" value="Chowdhury" />
+                <div className="col-span-2">
+                    <Label>Nome Completo</Label>
+                    <Input 
+                      type="text" 
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Email Address</Label>
-                    <Input type="text" value="randomuser@pimjo.com" />
+                    <Input 
+                      type="email" 
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Phone</Label>
-                    <Input type="text" value="+09 363 398 46" />
+                    <Input 
+                      type="tel" 
+                      name="phone"
+                      value={formData.phone || ""}
+                      onChange={handleInputChange}
+                      placeholder="+244 123 456 789"
+                    />
                   </div>
 
                   <div className="col-span-2">
                     <Label>Bio</Label>
-                    <Input type="text" value="Team Manager" />
+                    <Input 
+                      type="text" 
+                      name="bio"
+                      value={formData.bio || ""}
+                      onChange={handleInputChange}
+                      placeholder="Sua breve descrição"
+                    />
+                  </div>
+
+                  <div className="col-span-2">
+                    <Label>Status</Label>
+                    <select
+                      name="role"
+                      value={formData.role}
+                      onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm dark:border-gray-700 dark:bg-gray-800"
+                    >
+                      <option value="MEMBRO_NAO_BAPTIZADO">Membro Não Batizado</option>
+                      <option value="MEMBRO_BAPTIZADO">Membro Batizado</option>
+                      <option value="LIDER">Líder</option>
+                      <option value="ADMIN">Admin</option>
+                    </select>
                   </div>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-              <Button size="sm" variant="outline" onClick={closeModal}>
+              <Button size="sm" variant="outline" onClick={closeModal} disabled={isLoading}>
                 Close
               </Button>
-              <Button size="sm" onClick={handleSave}>
-                Save Changes
+              <Button 
+                size="sm" 
+                disabled={isLoading}
+              >
+                {isLoading ? 'Salvando...' : 'Salvar Alterações'}
               </Button>
             </div>
           </form>
