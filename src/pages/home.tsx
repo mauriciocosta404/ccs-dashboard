@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Navbar from '../components/landing-page/Navbar';
 import Hero from '../components/landing-page/Hero';
 import AboutPastor from '../components/landing-page/AboutPastor';

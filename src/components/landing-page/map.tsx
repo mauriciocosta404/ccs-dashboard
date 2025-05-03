@@ -1,5 +1,5 @@
 import {  MapPin} from 'lucide-react';
-import React from 'react';
+
 
 export const Maps = () => {
   return (

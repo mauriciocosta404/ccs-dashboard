@@ -1,8 +1,9 @@
-import React from 'react';
+
 import { Menu, X} from 'lucide-react';
+import { useState } from 'react';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className="bg-white shadow-lg fixed w-full z-50 p-2">
