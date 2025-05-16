@@ -1,13 +1,135 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
+import httpClient from "../../api/httpClient";
+import { toast } from "react-toastify";
+import Select from "../form/Select";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Estado para os campos do formulário
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: "MEMBRO_NAO_BAPTIZADO" // Valor padrão
+  });
+
+  // Estado para erros de validação
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    terms: ""
+  });
+
+  // Manipulador de mudanças nos inputs
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Limpa o erro quando o usuário começa a digitar
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
+    }
+  };
+
+  // Validação do formulário
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      terms: ""
+    };
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+      valid = false;
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+      valid = false;
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+      valid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+      valid = false;
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+      valid = false;
+    }
+
+    if (!isChecked) {
+      newErrors.terms = "You must accept the terms and conditions";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  // Manipulador de submissão do formulário
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Combina first e last name
+      const fullName = `${formData.firstName} ${formData.lastName}`;
+      
+      // Dados para enviar para a API
+      const userData = {
+        name: fullName,
+        email: formData.email,
+        senha: formData.password,
+        role: formData.role
+      };
+
+      // Faz a requisição para a API
+      //const response = 
+      await httpClient.post('/users', userData);
+      
+      toast.success("Registration successful! Please sign in.");
+      navigate("/signin");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Registration failed. Please try again.");
+      console.error("Registration error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
       <div className="w-full max-w-md mx-auto mb-5 sm:pt-10">
@@ -82,7 +204,7 @@ export default function SignUpForm() {
                 </span>
               </div>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-5">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {/* <!-- First Name --> */}
@@ -92,10 +214,15 @@ export default function SignUpForm() {
                     </Label>
                     <Input
                       type="text"
-                      id="fname"
-                      name="fname"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
                       placeholder="Enter your first name"
+                      //error={errors.firstName}
                     />
+                     {errors.firstName && (
+                      <p className="mt-1 text-sm text-error-500">{errors.firstName}</p>
+                    )}
                   </div>
                   {/* <!-- Last Name --> */}
                   <div className="sm:col-span-1">
@@ -103,11 +230,16 @@ export default function SignUpForm() {
                       Last Name<span className="text-error-500">*</span>
                     </Label>
                     <Input
-                      type="text"
-                      id="lname"
-                      name="lname"
-                      placeholder="Enter your last name"
+                       type="text"
+                       name="lastName"
+                       value={formData.lastName}
+                       onChange={handleInputChange}
+                       placeholder="Enter your last name"
+                       //error={errors.lastName}
                     />
+                     {errors.lastName && (
+                      <p className="mt-1 text-sm text-error-500">{errors.lastName}</p>
+                    )}
                   </div>
                 </div>
                 {/* <!-- Email --> */}
@@ -116,11 +248,16 @@ export default function SignUpForm() {
                     Email<span className="text-error-500">*</span>
                   </Label>
                   <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email"
+                     type="email"
+                     name="email"
+                     value={formData.email}
+                     onChange={handleInputChange}
+                     placeholder="Enter your email"
+                     //error={errors.email}
                   />
+                   {errors.email && (
+                    <p className="mt-1 text-sm text-error-500">{errors.email}</p>
+                  )}
                 </div>
                 {/* <!-- Password --> */}
                 <div>
@@ -129,8 +266,12 @@ export default function SignUpForm() {
                   </Label>
                   <div className="relative">
                     <Input
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
                       placeholder="Enter your password"
                       type={showPassword ? "text" : "password"}
+                      //error={errors.password}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -143,13 +284,41 @@ export default function SignUpForm() {
                       )}
                     </span>
                   </div>
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-error-500">{errors.password}</p>
+                  )}
                 </div>
+
+                {/* <!-- select --> */}
+                <div>
+                  <Label>
+                    Member Status<span className="text-error-500">*</span>
+                  </Label>
+                  <Select
+                    name="role"
+                    value={formData.role}
+                    onChange={(value) => setFormData(prev => ({ ...prev, role: value }))}
+                    //onChange={handleInputChange}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg dark:border-gray-700 dark:bg-gray-800"
+                      options={[
+                        { value: "MEMBRO_NAO_BAPTIZADO", label: "Non-Baptized Member" },
+                        { value: "MEMBRO_BAPTIZADO", label: "Baptized Member" },
+                      ]}
+                  >
+                  </Select>
+                </div>
+
                 {/* <!-- Checkbox --> */}
                 <div className="flex items-center gap-3">
                   <Checkbox
-                    className="w-5 h-5"
-                    checked={isChecked}
-                    onChange={setIsChecked}
+                     className="w-5 h-5"
+                     checked={isChecked}
+                     onChange={(checked) => {
+                       setIsChecked(checked);
+                       if (errors.terms) {
+                         setErrors(prev => ({ ...prev, terms: "" }));
+                       }
+                     }}
                   />
                   <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
                     By creating an account means you agree to the{" "}
@@ -162,10 +331,17 @@ export default function SignUpForm() {
                     </span>
                   </p>
                 </div>
+                {errors.terms && (
+                  <p className="text-sm text-error-500">{errors.terms}</p>
+                )}
+
                 {/* <!-- Button --> */}
                 <div>
-                  <button className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-                    Sign Up
+                  <button 
+                   type="submit"
+                   disabled={loading}
+                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                    {loading ? "Creating Account..." : "Sign Up"}
                   </button>
                 </div>
               </div>
