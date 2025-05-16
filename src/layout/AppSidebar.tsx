@@ -15,6 +15,7 @@ import {
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
+import { AlignLeft } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -336,24 +337,13 @@ const AppSidebar: React.FC = () => {
           {isExpanded || isHovered || isMobileOpen ? (
             <div>
               <img
-                className="dark:hidden w-[7rem] h-[6rem]"
-                src="/images/logo/logo.png"
+                src="/assets/logo.png"
+                width={70}
                 alt="Logo"
             />
-              <img
-                className="hidden dark:block w-[7rem] h-[6rem]"
-                src="/images/logo/logo.png"
-                alt="Logo"
-                width={50}
-              />
             </div>
           ) : (
-            <img
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+            <AlignLeft />
           )}
         </Link>
       </div>
