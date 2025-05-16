@@ -25,6 +25,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import { useState } from "react";
 import SplashScreen from "./components/common/SplashScreen";
 import NonBaptizedMembers from "./pages/NonBaptizedMembers";
+import BaptizedMembers from "./pages/BaptizedMembers";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -51,6 +52,7 @@ export default function App() {
               <Route path="/profile/:userId" element={<PrivateRoute  children={<UserProfiles />}/>}/>
               <Route path="/calendar" element={<PrivateRoute  children={<Calendar />}/>} />
               <Route path="/non-baptized-members" element={<PrivateRoute  children={ <NonBaptizedMembers />}/>} />
+              <Route path="/baptized-members" element={<PrivateRoute  children={ <BaptizedMembers />}/>} />
               <Route path="/blank" element={<Blank />} />
 
               {/* Forms */}

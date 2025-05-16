@@ -27,10 +27,10 @@ export default function MembersTable() {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await httpClient.get<Member[]>("/non-baptized-user");
+        const response = await httpClient.get<Member[]>("/baptized-user");
         setMembers(response.data);
       } catch (error) {
-        console.error("Erro ao buscar membros não batizados:", error);
+        console.error("Erro ao buscar membros batizados:", error);
       } finally {
         setLoading(false);
       }
@@ -41,7 +41,7 @@ export default function MembersTable() {
     }, []);
 
   return (
-    <ComponentCard title="Membros não Baptizados">
+    <ComponentCard title="Membros Baptizados">
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
         <div className="max-w-full overflow-x-auto">
             <div className="min-w-[600px]">
@@ -89,7 +89,7 @@ export default function MembersTable() {
                         </TableCell>
                         <TableCell className="px-5 py-4 text-start text-gray-600 dark:text-gray-400">{member.email}</TableCell>
                         <TableCell className="px-5 py-4 text-start">
-                        <Badge color="warning">Não Batizado</Badge>
+                        <Badge color="success">Batizado</Badge>
                         </TableCell>
                     </TableRow>
                     ))
