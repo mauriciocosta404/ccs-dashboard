@@ -8,6 +8,7 @@ import { User } from "../types/User";
 import { useEffect, useState } from "react";
 import httpClient from "../api/httpClient";
 import Alert from "../components/ui/alert/Alert";
+import { Skeleton } from "@mui/material";
 
 export default function UserProfiles() {
   const { userId } = useParams<{ userId: string }>();
@@ -44,7 +45,16 @@ export default function UserProfiles() {
   }, [userId]);
 
 if (loading) {
-  return <div>Carregando...</div>;
+  return(
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
+    <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
+      Carregando Perfil...
+    </h3>
+    <div className="space-y-6">
+      <SkeletonUserMetaCard />
+    </div>
+  </div>
+  );
 }
 
 if (error) {
@@ -83,5 +93,47 @@ if (!user) {
         </div>
       </div>
     </>
+  );
+}
+
+
+function SkeletonUserMetaCard() {
+  return (
+    <div className="rounded-xl border p-4 bg-white dark:bg-white/[0.03]">
+      <div className="flex items-center gap-4">
+        <Skeleton variant="circular" width={64} height={64} />
+        <div className="flex-1 space-y-2">
+          <Skeleton variant="text" width="60%" height={24} />
+          <Skeleton variant="text" width="40%" height={20} />
+        </div>
+      </div>
+
+      <div className="rounded-xl border p-4 bg-white mt-4 dark:bg-white/[0.03]">
+        <div className="flex items-center gap-4">
+          <div className="flex-1 space-y-2">
+            <Skeleton variant="text" width="60%" height={30} />
+            <Skeleton variant="text" width="40%" height={30} />
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-xl border p-4 bg-white mt-4 dark:bg-white/[0.03]">
+        <div className="flex items-center gap-4">
+          <div className="flex-1 space-y-2">
+            <Skeleton variant="text" width="60%" height={30} />
+            <Skeleton variant="text" width="40%" height={30} />
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-xl border p-4 bg-white mt-4 dark:bg-white/[0.03]">
+        <div className="flex items-center gap-4">
+          <div className="flex-1 space-y-2">
+            <Skeleton variant="text" width="60%" height={30} />
+            <Skeleton variant="text" width="40%" height={30} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
