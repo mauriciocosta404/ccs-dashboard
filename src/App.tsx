@@ -27,6 +27,7 @@ import SplashScreen from "./components/common/SplashScreen";
 import NonBaptizedMembers from "./pages/NonBaptizedMembers";
 import BaptizedMembers from "./pages/BaptizedMembers";
 import Members from "./pages/Members";
+import RegisterEvent from "./pages/RegisterEvent";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -55,6 +56,7 @@ export default function App() {
               <Route path="/non-baptized-members" element={<PrivateRoute  children={ <NonBaptizedMembers />}/>} />
               <Route path="/baptized-members" element={<PrivateRoute  children={ <BaptizedMembers />}/>} />
               <Route path="/members" element={<PrivateRoute  children={ <Members />}/>} />
+              <Route path="/register-event" element={<PrivateRoute  children={ <RegisterEvent />}/>} />
               <Route path="/blank" element={<Blank />} />
 
               {/* Forms */}

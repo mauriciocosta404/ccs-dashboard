@@ -16,6 +16,7 @@ import {
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { AlignLeft } from "lucide-react";
+import useAuth from "../auth/useAuth";
 
 type NavItem = {
   name: string;
@@ -24,6 +25,28 @@ type NavItem = {
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
+
+const AppSidebar: React.FC = () => {
+  const { user } = useAuth();
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const location = useLocation();
+
+  const [openSubmenu, setOpenSubmenu] = useState<{
+    type: "main" | "others";
+    index: number;
+  } | null>(null);
+  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
+    {}
+  );
+  const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // const isActive = (path: string) => location.pathname === path;
+  const isActive = useCallback(
+    (path: string) => location.pathname === path,
+    [location.pathname]
+  );
+
+  
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
@@ -38,7 +61,7 @@ const navItems: NavItem[] = [
   {
     icon: <UserCircleIcon />,
     name: "User Profile",
-    path: "/profile",
+    path: `/profile/${user?.id}`,
   },
   {
     name: "Forms",
@@ -74,7 +97,8 @@ const navItems: NavItem[] = [
     name: "Actividades",
     icon: <CalenderIcon/>,
     subItems: [
-      { name: "Baptizados", path: "/form-elements", pro: false }
+      { name: "Ver", path: "/form-elements", pro: false },
+      { name: "Criar", path: "/register-event", pro: false },
     ],
   },
   {
@@ -122,25 +146,6 @@ const othersItems: NavItem[] = [
     ],
   },
 ];
-
-const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
-  const location = useLocation();
-
-  const [openSubmenu, setOpenSubmenu] = useState<{
-    type: "main" | "others";
-    index: number;
-  } | null>(null);
-  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
-    {}
-  );
-  const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  // const isActive = (path: string) => location.pathname === path;
-  const isActive = useCallback(
-    (path: string) => location.pathname === path,
-    [location.pathname]
-  );
 
   useEffect(() => {
     let submenuMatched = false;
