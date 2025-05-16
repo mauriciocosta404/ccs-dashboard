@@ -50,7 +50,7 @@ const navItems: NavItem[] = [
     icon: <UserCircleIcon/>,
     subItems: [
       { name: "Baptizados", path: "/basic-tables", pro: false },
-      { name: "Não baptizados", path: "/form-elements", pro: false },
+      { name: "Não baptizados", path: "/non-baptized-members", pro: false },
       { name: "Lideres", path: "/basic-tables", pro: false },
     ],
   },
