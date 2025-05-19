@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import Badge from "../components/ui/badge/Badge";
+import Badge from "../../components/ui/badge/Badge";
 import {
   Table,
   TableBody,
   TableCell,
   TableHeader,
   TableRow,
-} from "../components/ui/table";
+} from "../../components/ui/table";
 import Skeleton from '@mui/material/Skeleton';
-import httpClient from "../api/httpClient";
-import ComponentCard from "../components/common/ComponentCard";
+import httpClient from "../../api/httpClient";
+import ComponentCard from "../../components/common/ComponentCard";
 
 interface Member {
   id: string;

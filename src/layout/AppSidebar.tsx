@@ -97,7 +97,7 @@ const navItems: NavItem[] = [
     name: "Actividades",
     icon: <CalenderIcon/>,
     subItems: [
-      { name: "Ver", path: "/form-elements", pro: false },
+      { name: "Ver", path: "/events", pro: false },
       { name: "Criar", path: "/register-event", pro: false },
     ],
   },

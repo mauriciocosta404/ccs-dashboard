@@ -1,15 +1,15 @@
 import { useState } from "react";
-import ComponentCard from "../components/common/ComponentCard";
-import PageBreadcrumb from "../components/common/PageBreadCrumb";
-import PageMeta from "../components/common/PageMeta";
-import Label from "../components/form/Label";
-import { CalenderIcon } from "../icons";
+import ComponentCard from "../../components/common/ComponentCard";
+import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import PageMeta from "../../components/common/PageMeta";
+import Label from "../../components/form/Label";
+import { CalenderIcon } from "../../icons";
 import Flatpickr from "react-flatpickr";
-import TextArea from "../components/form/input/TextArea";
-import Input from "../components/form/input/InputField";
-import Button from "../components/ui/button/Button";
+import TextArea from "../../components/form/input/TextArea";
+import Input from "../../components/form/input/InputField";
+import Button from "../../components/ui/button/Button";
 import { useDropzone } from "react-dropzone";
-import httpClient from "../api/httpClient";
+import httpClient from "../../api/httpClient";
 import { toast } from "react-toastify";
 
 // Interfaces para os dados e props
