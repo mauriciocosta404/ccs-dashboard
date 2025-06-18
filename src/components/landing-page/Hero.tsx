@@ -119,26 +119,6 @@ const Hero = () => {
           />
         ))}
       </div>
-
-      {/* Estilos CSS personalizados para animações */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fade-in {
-          animation: fadeIn 0.8s ease-out;
-        }
-        
-        .animate-fade-in-delay {
-          animation: fadeIn 0.8s ease-out 0.2s both;
-        }
-        
-        .animate-fade-in-delay-2 {
-          animation: fadeIn 0.8s ease-out 0.4s both;
-        }
-      `}</style>
     </div>
   );
 };
