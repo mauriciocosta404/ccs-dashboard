@@ -29,6 +29,8 @@ import BaptizedMembers from "./pages/members/BaptizedMembers";
 import Members from "./pages/members/Members";
 import RegisterEvent from "./pages/events/RegisterEvent";
 import ListEvents from "./pages/events/EventList";
+import { Bible } from "./pages/Bible";
+import DefaultLayout from "./layout/DefaultLayout";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -47,6 +49,11 @@ export default function App() {
           <ScrollToTop />
           <Routes>
             <Route index path="/" element={<LandigPage />} />
+
+            <Route element={<DefaultLayout />}>
+              <Route path="/bible" element={<Bible />} />
+            </Route>
+
             {/* Dashboard Layout */}
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<PrivateRoute  children={<Home />}/>} />
@@ -80,6 +87,7 @@ export default function App() {
               {/* Charts */}
               <Route path="/line-chart" element={<LineChart />} />
               <Route path="/bar-chart" element={<BarChart />} />
+
             </Route>
 
             {/* Auth Layout */}
