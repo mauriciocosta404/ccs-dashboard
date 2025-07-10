@@ -11,7 +11,7 @@ interface ChatResponse {
 }
 
 class AIChatService {
-  private apiUrl = 'https://api.openai.com/v1/chat/completions';
+  //private apiUrl = 'https://api.openai.com/v1/chat/completions';
   private fallbackResponses: { [key: string]: string[] } = {
     'salvação': [
       'A salvação é um dom gratuito de Deus através de Jesus Cristo. Como está escrito em Efésios 2:8-9: "Pois vocês são salvos pela graça, por meio da fé, e isto não vem de vocês, é dom de Deus; não por obras, para que ninguém se glorie."',
@@ -43,7 +43,7 @@ class AIChatService {
     ]
   };
 
-  private getSystemPrompt(): string {
+  /*private getSystemPrompt(): string {
     return `Você é um assistente espiritual cristão sábio e compassivo da Igreja da Paz. Sua função é:
 
 1. Responder questões bíblicas e espirituais com base nas Escrituras
@@ -55,12 +55,12 @@ class AIChatService {
 7. Sempre apontar para Jesus Cristo como a resposta definitiva
 
 Responda de forma clara, bíblica e pastoral. Use versículos das Escrituras quando relevante e mantenha suas respostas focadas na fé cristã evangélica.`;
-  }
+  }*/
 
-  async sendMessage(message: string, conversationHistory: ChatMessage[] = []): Promise<ChatResponse> {
+  async sendMessage(/*message: string,*/ conversationHistory: ChatMessage[] = []): Promise<ChatResponse> {
     try {
       // Primeiro, tenta usar uma API real (se disponível)
-      const response = await this.tryRealAPI(message, conversationHistory);
+      const response = await this.tryRealAPI(/*message,*/ /*conversationHistory*/);
       if (response.success) {
         return response;
       }
@@ -72,7 +72,7 @@ Responda de forma clara, bíblica e pastoral. Use versículos das Escrituras qua
     return this.generateLocalResponse(message);
   }
 
-  private async tryRealAPI(message: string, history: ChatMessage[]): Promise<ChatResponse> {
+  private async tryRealAPI(/*message: string, history: ChatMessage[]*/): Promise<ChatResponse> {
     // Esta função tentaria usar uma API real se estivesse configurada
     // Por enquanto, sempre retorna falha para usar o fallback local
     throw new Error('API externa não configurada');
