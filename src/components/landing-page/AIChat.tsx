@@ -48,7 +48,7 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      const response = await aiChatService.sendMessage(inputMessage.trim(), messages);
+      const response = await aiChatService.sendMessage(inputMessage.trim()/*, messages*/);
       
       if (response.success) {
         const assistantMessage: ChatMessage = {
