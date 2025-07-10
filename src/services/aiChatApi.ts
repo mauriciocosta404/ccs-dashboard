@@ -57,7 +57,7 @@ class AIChatService {
 Responda de forma clara, bíblica e pastoral. Use versículos das Escrituras quando relevante e mantenha suas respostas focadas na fé cristã evangélica.`;
   }*/
 
-  async sendMessage(/*message: string,*/ conversationHistory: ChatMessage[] = []): Promise<ChatResponse> {
+  async sendMessage(message: string/*, conversationHistory: ChatMessage[] = []*/): Promise<ChatResponse> {
     try {
       // Primeiro, tenta usar uma API real (se disponível)
       const response = await this.tryRealAPI(/*message,*/ /*conversationHistory*/);
