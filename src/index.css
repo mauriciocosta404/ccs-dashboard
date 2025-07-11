@@ -824,3 +824,19 @@ span.flatpickr-weekday,
 .animate-fade-in-delay-2 {
   animation: fadeIn 0.8s ease-out 0.4s both;
 }
+
+/* Evita zoom automático no iOS */
+input, textarea, select {
+  font-size: 16px !important;
+}
+
+/* Melhora a experiência de toque no iOS */
+button, input, textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Previne o comportamento de pull-to-refresh que pode causar problemas */
+body {
+  overscroll-behavior-y: contain;
+}
