@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader, X, Minimize2, Maximize2 } from 'lucide-react';
 import { aiChatService, ChatMessage } from '../../services/aiChatApi';
-//import { aiChatService, ChatMessage } from '../services/aiChatApi';
 
 const AIChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -33,6 +32,17 @@ const AIChat = () => {
     }
   }, [isOpen, isMinimized]);
 
+  useEffect(() => {
+    if (isOpen && !isMinimized) {
+      const handleResize = () => {
+        scrollToBottom();
+      };
+
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, [isOpen, isMinimized]);
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
 
@@ -48,7 +58,7 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      const response = await aiChatService.sendMessage(inputMessage.trim()/*, messages*/);
+      const response = await aiChatService.sendMessage(inputMessage.trim());
       
       if (response.success) {
         const assistantMessage: ChatMessage = {
@@ -106,7 +116,7 @@ const AIChat = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-300 hover:scale-110 z-50"
+        className="fixed bottom-6 flex justify-center items-center right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-300 hover:scale-110 z-50 md:h-12 md:w-12 h-14 w-14"
       >
         <Bot className="h-6 w-6" />
       </button>
@@ -115,7 +125,9 @@ const AIChat = () => {
 
   return (
     <div className={`fixed bottom-6 right-6 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 transition-all duration-300 flex flex-col ${
-      isMinimized ? 'w-80 h-16' : 'w-96 h-[600px]'
+      isMinimized ? 'w-80 h-16' : 'w-full md:w-96 h-[70vh] md:h-[600px] max-w-[calc(100vw-48px)]'
+    } ${
+      isOpen && !isMinimized ? 'left-6 md:left-auto' : ''
     }`}>
       {/* Header */}
       <div className="bg-indigo-600 text-white p-4 rounded-t-lg flex items-center justify-between flex-shrink-0">
@@ -147,7 +159,7 @@ const AIChat = () => {
       {!isMinimized && (
         <>
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 w-full">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -198,9 +210,9 @@ const AIChat = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Questions - Only show when conversation just started */}
+          {/* Quick Questions */}
           {messages.length === 1 && (
-            <div className="px-4 py-2 border-t border-gray-100 flex-shrink-0">
+            <div className="px-4 py-2 border-t border-gray-100 flex-shrink-0 w-full">
               <p className="text-xs text-gray-500 mb-2 font-medium">Perguntas frequentes:</p>
               <div className="grid grid-cols-1 gap-1">
                 {quickQuestions.slice(0, 3).map((question, index) => (
@@ -218,8 +230,8 @@ const AIChat = () => {
           )}
 
           {/* Input Area */}
-          <div className="border-t border-gray-200 p-4 flex-shrink-0">
-            <div className="flex space-x-2">
+          <div className="border-t border-gray-200 p-4 flex-shrink-0 w-full">
+            <div className="flex space-x-2 w-full">
               <input
                 ref={inputRef}
                 type="text"
@@ -227,13 +239,13 @@ const AIChat = () => {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Digite sua pergunta espiritual..."
-                className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent resize-none"
+                className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent resize-none w-full"
                 disabled={isLoading}
               />
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim() || isLoading}
-                className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 active:scale-95"
               >
                 <Send className="h-4 w-4" />
               </button>
