@@ -1,14 +1,36 @@
-import { BookOpen, Shuffle } from "lucide-react"
+import { BookOpen, Loader, Search, Shuffle } from "lucide-react"
 import { useEffect, useState } from "react";
-import { bibleApi, BibleVerse } from "../services/bible-service";
+import { bibleApi, BibleVerse, /*SearchResult*/ } from "../services/bible-service";
 
 export const Bible= () => {
     const [randomVerse, setRandomVerse] = useState<BibleVerse | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    //const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
+    const [activeTestament, setActiveTestament] = useState<'old' | 'new' | 'all'>('all');
+    const [loading, setLoading] = useState(false);
+    //const [/*showSearch,*/ setShowSearch] = useState(false);
 
     const loadRandomVerse = async () => {
         const verse = await bibleApi.getRandomVerse();
         setRandomVerse(verse);
     };
+
+    const handleSearch = async () => {
+    if (!searchTerm.trim()) return;
+    setLoading(true);
+    //setShowSearch(true);
+    //const results = await bibleApi.searchVerses(searchTerm);
+    //setSearchResults(results);
+    setLoading(false);
+  };
+
+  /*const filteredBooks = books.filter(book => {
+    const matchesTestament = activeTestament === 'all' || 
+      (activeTestament === 'old' && book.testament === 'VT') ||
+      (activeTestament === 'new' && book.testament === 'NT');
+    const matchesSearch = book.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesTestament && matchesSearch;
+  });*/
 
     useEffect(() => {
         loadRandomVerse();
@@ -48,6 +70,62 @@ export const Bible= () => {
                     </p>
                 </div>
                 )}
+
+                   <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex-1 relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="Buscar versículos ou livros..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+                        />
+                        </div>
+                        <button
+                        onClick={handleSearch}
+                        disabled={!searchTerm.trim() || loading}
+                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                        >
+                        {loading ? <Loader className="h-5 w-5 animate-spin" /> : 'Buscar'}
+                        </button>
+                        <div className="flex space-x-2">
+                        <button
+                            onClick={() => setActiveTestament('all')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                            activeTestament === 'all'
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                            Todos
+                        </button>
+                        <button
+                            onClick={() => setActiveTestament('old')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                            activeTestament === 'old'
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                            AT
+                        </button>
+                        <button
+                            onClick={() => setActiveTestament('new')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                            activeTestament === 'new'
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                            NT
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+
             </div>
         </div>
     )
