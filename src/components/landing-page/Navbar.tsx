@@ -52,6 +52,7 @@ const Navbar = () => {
             <a href="#contact" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Contato</a>
             <a
               className="block px-3 py-2 text-gray-700 hover:text-indigo-600"
+              href='/bible'
             >
               Bíblia
             </a>
