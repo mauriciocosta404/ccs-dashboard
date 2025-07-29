@@ -9,10 +9,13 @@ export const Bible= () => {
     const [activeTestament, setActiveTestament] = useState<'old' | 'new' | 'all'>('all');
     const [loading, setLoading] = useState(false);
     //const [/*showSearch,*/ setShowSearch] = useState(false);
+    const [isLoadVerse, setIsLoadVerse] = useState(false);
 
     const loadRandomVerse = async () => {
+        setIsLoadVerse(true)
         const verse = await bibleApi.getRandomVerse();
         setRandomVerse(verse);
+        setIsLoadVerse(false)
     };
 
     const handleSearch = async () => {
@@ -51,7 +54,7 @@ export const Bible= () => {
                     </div>
                 </div>
 
-                {randomVerse && (
+                {randomVerse ? (
                 <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 mb-8 text-white">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-semibold">Versículo do Dia</h3>
@@ -59,7 +62,7 @@ export const Bible= () => {
                             onClick={loadRandomVerse}
                             className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
                         >
-                            <Shuffle className="h-5 w-5" />
+                            {isLoadVerse ? <Loader className="mx-auto h-5 w-5 animate-spin" /> : <Shuffle className="h-5 w-5" />}
                         </button>
                     </div>
                     <p className="text-lg leading-relaxed mb-3">
@@ -69,7 +72,7 @@ export const Bible= () => {
                         {randomVerse.book.name} {randomVerse.chapter}:{randomVerse.number}
                     </p>
                 </div>
-                )}
+                ) : (<Loader className="mx-auto h-5 w-5 animate-spin" />) }
 
                    <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
                     <div className="flex flex-col md:flex-row gap-4">
