@@ -10,7 +10,7 @@ const About = () => {
               Nossa História
             </h2>
             <p className="text-md text-gray-600 mb-6 text-justify">
-              Fundada em 1990, a Igreja da Paz tem sido um farol de esperança em nossa
+              Fundada em 1990, a Igreja Adonai Cenaculo da Salvaçãotem sido um farol de esperança em nossa
               comunidade. Nossa jornada começou com um pequeno grupo de fiéis e cresceu
               para se tornar uma família vibrante de crentes.
             </p>
@@ -30,7 +30,7 @@ const About = () => {
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
                   src="https://www.youtube.com/embed/eESzBJElCx4"
-                  title="Igreja da Paz - Nossa História"
+                  title="Igreja Adonai Cenaculo da Salvação- Nossa História"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>

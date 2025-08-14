@@ -44,7 +44,7 @@ class AIChatService {
   };
 
   /*private getSystemPrompt(): string {
-    return `Você é um assistente espiritual cristão sábio e compassivo da Igreja da Paz. Sua função é:
+    return `Você é um assistente espiritual cristão sábio e compassivo da Igreja Adonai Cenaculo da Salvação. Sua função é:
 
 1. Responder questões bíblicas e espirituais com base nas Escrituras
 2. Oferecer orientação pastoral amorosa e bíblica
@@ -111,7 +111,7 @@ Responda de forma clara, bíblica e pastoral. Use versículos das Escrituras qua
     // Respostas para perguntas sobre a igreja
     if (lowerMessage.includes('igreja') || lowerMessage.includes('culto') || lowerMessage.includes('pastor')) {
       return {
-        message: 'A Igreja da Paz é uma comunidade acolhedora onde você pode crescer em sua fé! Temos cultos aos domingos às 10h, quartas às 19h30 e sábados às 19h para os jovens. Nosso Pastor João Silva está sempre disponível para orientação pastoral. Venha nos visitar! 🏛️',
+        message: 'A Igreja Adonai Cenaculo da Salvaçãoé uma comunidade acolhedora onde você pode crescer em sua fé! Temos cultos aos domingos às 10h, quartas às 19h30 e sábados às 19h para os jovens. Nosso Pastor João Silva está sempre disponível para orientação pastoral. Venha nos visitar! 🏛️',
         success: true
       };
     }
