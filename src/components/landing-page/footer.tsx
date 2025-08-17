@@ -92,7 +92,11 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
           <p className="text-gray-400">
+<<<<<<< HEAD
             © {new Date().getFullYear()} Igreja Adonai Cenáculo da Salvação. Todos os direitos reservados.
+=======
+            © {new Date().getFullYear()} Igreja Adonai Cenaculo da Salvação. Todos os direitos reservados.
+>>>>>>> 2455bca40554beafa961d2b62ef6c492a9ab40e2
           </p>
         </div>
       </div>

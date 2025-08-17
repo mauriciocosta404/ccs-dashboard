@@ -7,7 +7,11 @@ const AIChat = () => {
     {
       id: '1',
       role: 'assistant',
+<<<<<<< HEAD
       content: 'Olá! Sou o assistente espiritual da Igreja Adonai Cenáculo da Salvação. Como posso ajudá-lo hoje? Posso responder questões sobre a Bíblia, fé, oração, ou qualquer dúvida espiritual que você tenha. 🙏',
+=======
+      content: 'Olá! Sou o assistente espiritual da Igreja Adonai Cenaculo da Salvação. Como posso ajudá-lo hoje? Posso responder questões sobre a Bíblia, fé, oração, ou qualquer dúvida espiritual que você tenha. 🙏',
+>>>>>>> 2455bca40554beafa961d2b62ef6c492a9ab40e2
       timestamp: new Date()
     }
   ]);
@@ -137,7 +141,11 @@ const AIChat = () => {
           </div>
           <div>
             <h3 className="font-semibold">Assistente Espiritual</h3>
+<<<<<<< HEAD
             <p className="text-xs text-indigo-200">Igreja Adonai Cenáculo da Salvação</p>
+=======
+            <p className="text-xs text-indigo-200">Igreja Adonai Cenaculo da Salvação</p>
+>>>>>>> 2455bca40554beafa961d2b62ef6c492a9ab40e2
           </div>
         </div>
         <div className="flex items-center space-x-2">

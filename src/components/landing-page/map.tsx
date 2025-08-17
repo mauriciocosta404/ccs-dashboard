@@ -19,7 +19,7 @@ export const Maps = () => {
               allowFullScreen 
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
-              title="Localização da Igreja Adonai Cenáculo da Salvação"
+              title="Localização da Igreja Adonai Cenaculo da Salvação"
               className="w-full h-full"
             ></iframe>
           </div>
