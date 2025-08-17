@@ -92,7 +92,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
           <p className="text-gray-400">
-            © {new Date().getFullYear()} Igreja da Paz. Todos os direitos reservados.
+            © {new Date().getFullYear()} Igreja Adonai Cenáculo da Salvação. Todos os direitos reservados.
           </p>
         </div>
       </div>
