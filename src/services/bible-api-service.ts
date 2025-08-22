@@ -229,7 +229,7 @@ export const bibleApi = {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        //const data = await response.json();
         // Processar dados da API alternativa se disponível
       }
 
@@ -243,8 +243,8 @@ export const bibleApi = {
 
   getFallbackChapter: (bookId: string, chapter: number): BibleVerse[] => {
     // Retorna versículos de exemplo baseados no livro e capítulo
-    const books = bibleApi.getBooks();
-    const book = books.then(b => b.find(book => book.id === bookId));
+    //const books = bibleApi.getBooks();
+    //const book = books.then(b => b.find(book => book.id === bookId));
     
     // Para demonstração, retornamos alguns versículos de exemplo
     if (bookId === 'psalms' && chapter === 23) {
