@@ -238,7 +238,7 @@ export const bibleApi = {
     }
     
     // Fallback: retorna versículos de exemplo
-    return this.getFallbackChapter(bookId, chapter);
+    return bibleApi.getFallbackChapter(bookId, chapter);
   },
 
   getFallbackChapter: (bookId: string, chapter: number): BibleVerse[] => {
