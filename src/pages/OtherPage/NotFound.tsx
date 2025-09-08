@@ -6,8 +6,8 @@ export default function NotFound() {
   return (
     <>
       <PageMeta
-        title="React.js 404 Dashboard | TailAdmin - React.js Admin Dashboard Template"
-        description="This is React.js 404 Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        title="Adonai CCS - Dashboard"
+        description="Este dashboard oferece uma visão geral das métricas e estatísticas principais, ajudando você a monitorar o desempenho e tomar decisões informadas."
       />
       <div className="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1">
         <GridShape />

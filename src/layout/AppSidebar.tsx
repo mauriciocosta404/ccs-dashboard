@@ -10,7 +10,6 @@ import {
   ListIcon,
   PageIcon,
   PieChartIcon,
-  PlugInIcon,
   TableIcon,
   UserCircleIcon,
 } from "../icons";
@@ -51,7 +50,7 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    subItems: [{ name: "Estatistica", path: "/", pro: false }],
+    path: "/dashboard",
   },
   {
     icon: <CalenderIcon />,
@@ -136,15 +135,7 @@ const othersItems: NavItem[] = [
       { name: "Images", path: "/images", pro: false },
       { name: "Videos", path: "/videos", pro: false },
     ],
-  },
-  {
-    icon: <PlugInIcon />,
-    name: "Authentication",
-    subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
-    ],
-  },
+  }
 ];
 
   useEffect(() => {

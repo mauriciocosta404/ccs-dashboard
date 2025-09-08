@@ -10,8 +10,8 @@ export default function Videos() {
   return (
     <>
       <PageMeta
-        title="React.js Videos Tabs | TailAdmin - React.js Admin Dashboard Template"
-        description="This is React.js Videos page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        title="Adonai CCS - Dashboard"
+        description="Este dashboard oferece uma visão geral das métricas e estatísticas principais, ajudando você a monitorar o desempenho e tomar decisões informadas."
       />
       <PageBreadcrumb pageTitle="Videos" />
       <div className="grid grid-cols-1 gap-5 sm:gap-6 xl:grid-cols-2">
