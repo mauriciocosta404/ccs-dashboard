@@ -15,7 +15,7 @@ import {
   VideoIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
-import { AlignLeft } from "lucide-react";
+import { AlignLeft, Users } from "lucide-react";
 import useAuth from "../auth/useAuth";
 
 type NavItem = {
@@ -118,10 +118,14 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    name: "Tables",
-    icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
-  }
+    name: "EBD",
+    icon: <Users/>,
+    subItems: [
+      { name: "Ver professores", path: "/teachers", pro: false },
+      { name: "Ver alunos", path: "/students", pro: false },
+      { name: "Criar aluno", path: "/register-student", pro: false },
+    ],
+  },
 ];
 
 const othersItems: NavItem[] = [

@@ -32,7 +32,9 @@ import ListEvents from "./pages/events/EventList";
 import { Bible } from "./pages/Bible";
 import DefaultLayout from "./layout/DefaultLayout";
 import RegisterServiceDay from "./pages/services-day/register-service-day";
-import ServiceDayList from "./pages/services-day/Service-day-list";
+import RegisterSermon from "./pages/sermons/register-sermon";
+import SermonsList from "./pages/sermons/sermons-list";
+import ServiceDayList from "./pages/services-day/service-day-list";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -72,8 +74,11 @@ export default function App() {
               <Route path="/events" element={<PrivateRoute  children={ <ListEvents />}/>} />
               <Route path="/blank" element={<Blank />} />
 
-              <Route path="/register-service-day" element={<PrivateRoute  children={<RegisterServiceDay />}/>} />´
+              <Route path="/register-service-day" element={<PrivateRoute  children={<RegisterServiceDay />}/>} />
               <Route path="/service-days" element={<PrivateRoute  children={<ServiceDayList />}/>} />
+
+              <Route path="/register-sermon" element={<PrivateRoute  children={<RegisterSermon />}/>} />
+              <Route path="/sermons" element={<PrivateRoute  children={<SermonsList />}/>} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />
