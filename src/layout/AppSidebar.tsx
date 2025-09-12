@@ -10,7 +10,9 @@ import {
   ListIcon,
   PieChartIcon,
   TableIcon,
+  TimeIcon,
   UserCircleIcon,
+  VideoIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { AlignLeft } from "lucide-react";
@@ -97,6 +99,22 @@ const navItems: NavItem[] = [
     subItems: [
       { name: "Ver", path: "/events", pro: false },
       { name: "Criar", path: "/register-event", pro: false },
+    ],
+  },
+  {
+    name: "Dias de culto",
+    icon: <TimeIcon/>,
+    subItems: [
+      { name: "Ver", path: "/service-days", pro: false },
+      { name: "Criar", path: "/register-service-day", pro: false },
+    ],
+  },
+  {
+    name: "Pregações",
+    icon: <VideoIcon/>,
+    subItems: [
+      { name: "Ver", path: "/sermons", pro: false },
+      { name: "Criar", path: "/register-sermon", pro: false },
     ],
   },
   {
