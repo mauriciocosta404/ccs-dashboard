@@ -9,7 +9,6 @@ import {
   HorizontaLDots,
   ListIcon,
   PieChartIcon,
-  TableIcon,
   TimeIcon,
   UserCircleIcon,
   VideoIcon,
