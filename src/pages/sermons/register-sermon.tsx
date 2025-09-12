@@ -39,7 +39,7 @@ export default function RegisterSermon() {
   const [loading, setLoading] = useState<boolean>(false);
 
   // Manipulador para alterações nos inputs
-  const handleInputChange = (name: keyof SermonFormData, value: any) => {
+  const handleInputChange = (name: keyof SermonFormData, value: unknown) => {
     setFormData(prev => ({
       ...prev,
       [name]: value

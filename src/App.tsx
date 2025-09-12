@@ -35,6 +35,8 @@ import RegisterServiceDay from "./pages/services-day/register-service-day";
 import RegisterSermon from "./pages/sermons/register-sermon";
 import SermonsList from "./pages/sermons/sermons-list";
 import ServiceDayList from "./pages/services-day/service-day-list";
+import EbdStudentsList from "./pages/ebd/students-list";
+import RegisterEbdStudents from "./pages/ebd/register-students";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -79,6 +81,10 @@ export default function App() {
 
               <Route path="/register-sermon" element={<PrivateRoute  children={<RegisterSermon />}/>} />
               <Route path="/sermons" element={<PrivateRoute  children={<SermonsList />}/>} />
+
+              <Route path="/students" element={<PrivateRoute  children={<EbdStudentsList />}/>} />
+              {/* <Route path="/teachers" element={<PrivateRoute  children={<EbdTeachersList />}/>} /> */}
+              <Route path="/register-student" element={<PrivateRoute  children={<RegisterEbdStudents />}/>} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />
