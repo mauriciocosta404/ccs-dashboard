@@ -240,11 +240,11 @@ function FamilyInfo({
   fatherName, 
   motherName, 
   address, 
-  teacherId,
+  //teacherId,
   onFatherNameChange, 
   onMotherNameChange, 
   onAddressChange, 
-  onTeacherIdChange,
+  //onTeacherIdChange,
   onSubmit,
   loading 
 }: FamilyInfoProps) {
@@ -284,7 +284,7 @@ function FamilyInfo({
           />
         </div>
 
-        <div>
+        {/*<div>
           <Label htmlFor="teacher-id">ID do Professor (Opcional)</Label>
           <Input 
             type="text" 
@@ -296,7 +296,7 @@ function FamilyInfo({
           <p className="mt-1 text-xs text-gray-500">
             Deixe vazio se não souber o ID do professor
           </p>
-        </div>
+        </div>*/}
 
         <Button 
           className="w-full" 
