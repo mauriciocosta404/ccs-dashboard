@@ -29,7 +29,6 @@ export default function SermonList() {
     const fetchSermons = async () => {
       try {
         const response = await httpClient.get<Sermon[]>("/sermons");
-        console.log(response);
         setSermons(response.data);
       } catch (error) {
         console.error("Erro ao buscar pregações:", error);
