@@ -1,24 +1,102 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
+import { Clock, Loader } from "lucide-react";
+import httpClient from "../../api/httpClient";
 
-import { Clock, MapPin } from 'lucide-react';
+// Interfaces
+interface ServiceDay {
+  id: string;
+  name: string;
+  weekday: number;
+  description: string | null;
+  time: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// API para buscar dias de culto
+const serviceDaysApi = {
+  getAllServiceDays: async (): Promise<ServiceDay[]> => {
+    try {
+      const response = await httpClient.get<ServiceDay[]>("/service-days");
+      const data = response.data;
+      return data;
+    } catch (error) {
+      console.error("Erro ao buscar dias de culto:", error);
+      throw error;
+    }
+  }
+};
 
 const Services = () => {
-  const services = [
-    {
-      day: 'Domingo',
-      time: '10:00',
-      type: 'Culto de Celebração',
-    },
-    {
-      day: 'Quarta',
-      time: '19:30',
-      type: 'Culto de Oração',
-    },
-    {
-      day: 'Sábado',
-      time: '19:00',
-      type: 'Culto de Jovens',
-    },
-  ];
+  const [services, setServices] = useState<ServiceDay[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Função para converter número do dia da semana para nome
+  const getWeekdayName = (weekday: number): string => {
+    const weekdays = [
+      'Domingo',    // 0
+      'Segunda',    // 1
+      'Terça',      // 2
+      'Quarta',     // 3
+      'Quinta',     // 4
+      'Sexta',      // 5
+      'Sábado'      // 6
+    ];
+    return weekdays[weekday] || 'Desconhecido';
+  };
+
+  // Função para formatar horário
+  const formatTime = (time: string): string => {
+    try {
+      // Se o time já estiver no formato HH:MM, retorna assim
+      if (time.includes(':') && time.length <= 5) {
+        return time;
+      }
+      
+      // Se for um horário completo (ex: "19:30:00"), extrai apenas HH:MM
+      const timeParts = time.split(':');
+      if (timeParts.length >= 2) {
+        return `${timeParts[0]}:${timeParts[1]}`;
+      }
+      
+      return time;
+    } catch (error: any) {
+      console.error('Erro ao formatar horário:', error);
+      return time;
+    }
+  };
+
+  // Carregar dias de culto
+  const loadServiceDays = async () => {
+    setLoading(true);
+    try {
+      const data = await serviceDaysApi.getAllServiceDays();
+      
+      // Ordena por dia da semana
+      const sortedData = data.sort((a, b) => a.weekday - b.weekday);
+      setServices(sortedData);
+    } catch (error) {
+      console.error('Erro ao carregar dias de culto:', error);
+      setServices([]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadServiceDays();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="services" className="py-20 bg-gray-50">
+          <div className="text-center py-12">
+            <Loader className="h-12 w-12 animate-spin mx-auto text-indigo-600 mb-4" />
+            <p className="text-lg text-gray-500">Carregando horários dos cultos...</p>
+          </div>
+      </section>
+    );
+  }
 
   return (
     <section id="services" className="py-20 bg-gray-50">
@@ -32,30 +110,34 @@ const Services = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition duration-300"
-            >
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                {service.day}
-              </h3>
-              <div className="flex items-center justify-center mb-4">
-                <Clock className="h-5 w-5 text-indigo-600 mr-2" />
-                <span className="text-lg text-gray-700">{service.time}</span>
-              </div>
-              <p className="text-gray-600">{service.type}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center text-indigo-600">
-            <MapPin className="h-5 w-5 mr-2" />
-            <span>Rua Example, 123 - Cidade</span>
+        {services.length === 0 ? (
+          <div className="text-center">
+            <p className="text-lg text-gray-600">Nenhum culto cadastrado no momento.</p>
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {services.map((service, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition duration-300"
+                >
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    {getWeekdayName(service.weekday)}
+                  </h3>
+                  <div className="flex items-center justify-center mb-4">
+                    <Clock className="h-5 w-5 text-indigo-600 mr-2" />
+                    <span className="text-lg text-gray-700">{formatTime(service.time)}</span>
+                  </div>
+                  <p className="text-gray-600">{service.name}</p>
+                  {service.description && (
+                    <p className="text-sm text-gray-500 mt-2">{service.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
