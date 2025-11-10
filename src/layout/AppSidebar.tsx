@@ -16,12 +16,19 @@ import {
 import { useSidebar } from "../context/SidebarContext";
 import { AlignLeft, Users } from "lucide-react";
 import useAuth from "../auth/useAuth";
+import CreateMinistryModal from "../components/ministry/CreateMinistryModal";
 
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: { 
+    name: string; 
+    path?: string; 
+    onClick?: () => void;
+    pro?: boolean; 
+    new?: boolean;
+  }[];
 };
 
 
@@ -38,6 +45,7 @@ const AppSidebar: React.FC = () => {
     {}
   );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [isCreateMinistryModalOpen, setIsCreateMinistryModalOpen] = useState(false);
 
   // const isActive = (path: string) => location.pathname === path;
   const isActive = useCallback(
@@ -81,6 +89,7 @@ const navItems: NavItem[] = [
     name: "Ministérios",
     icon: <UserCircleIcon/>,
     subItems: [
+      { name: "Criar Ministério", onClick: () => setIsCreateMinistryModalOpen(true) },
       { name: "Louvor", path: "/form-elements", pro: false },
       { name: "Intercessão", path: "/form-elements", pro: false },
       { name: "Protocolo", path: "/form-elements", pro: false },
@@ -157,7 +166,7 @@ const othersItems: NavItem[] = [
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
-            if (isActive(subItem.path)) {
+            if (subItem.path && isActive(subItem.path)) {
               setOpenSubmenu({
                 type: menuType as "main" | "others",
                 index,
@@ -278,40 +287,49 @@ const othersItems: NavItem[] = [
               <ul className="mt-2 space-y-1 ml-9">
                 {nav.subItems.map((subItem) => (
                   <li key={subItem.name}>
-                    <Link
-                      to={subItem.path}
-                      className={`menu-dropdown-item ${
-                        isActive(subItem.path)
-                          ? "menu-dropdown-item-active"
-                          : "menu-dropdown-item-inactive"
-                      }`}
-                    >
-                      {subItem.name}
-                      <span className="flex items-center gap-1 ml-auto">
-                        {subItem.new && (
-                          <span
-                            className={`ml-auto ${
-                              isActive(subItem.path)
-                                ? "menu-dropdown-badge-active"
-                                : "menu-dropdown-badge-inactive"
-                            } menu-dropdown-badge`}
-                          >
-                            new
-                          </span>
-                        )}
-                        {subItem.pro && (
-                          <span
-                            className={`ml-auto ${
-                              isActive(subItem.path)
-                                ? "menu-dropdown-badge-active"
-                                : "menu-dropdown-badge-inactive"
-                            } menu-dropdown-badge`}
-                          >
-                            pro
-                          </span>
-                        )}
-                      </span>
-                    </Link>
+                    {subItem.onClick ? (
+                      <button
+                        onClick={subItem.onClick}
+                        className="menu-dropdown-item menu-dropdown-item-inactive w-full text-left"
+                      >
+                        {subItem.name}
+                      </button>
+                    ) : (
+                      <Link
+                        to={subItem.path || "#"}
+                        className={`menu-dropdown-item ${
+                          subItem.path && isActive(subItem.path)
+                            ? "menu-dropdown-item-active"
+                            : "menu-dropdown-item-inactive"
+                        }`}
+                      >
+                        {subItem.name}
+                        <span className="flex items-center gap-1 ml-auto">
+                          {subItem.new && (
+                            <span
+                              className={`ml-auto ${
+                                subItem.path && isActive(subItem.path)
+                                  ? "menu-dropdown-badge-active"
+                                  : "menu-dropdown-badge-inactive"
+                              } menu-dropdown-badge`}
+                            >
+                              new
+                            </span>
+                          )}
+                          {subItem.pro && (
+                            <span
+                              className={`ml-auto ${
+                                subItem.path && isActive(subItem.path)
+                                  ? "menu-dropdown-badge-active"
+                                  : "menu-dropdown-badge-inactive"
+                              } menu-dropdown-badge`}
+                            >
+                              pro
+                            </span>
+                          )}
+                        </span>
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -394,6 +412,10 @@ const othersItems: NavItem[] = [
           </div>
         </nav>
       </div>
+      <CreateMinistryModal
+        isOpen={isCreateMinistryModalOpen}
+        onClose={() => setIsCreateMinistryModalOpen(false)}
+      />
     </aside>
   );
 };
