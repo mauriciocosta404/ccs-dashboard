@@ -4,6 +4,5 @@ import { ReactNode } from 'react';
 
 export default function PrivateRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
-  console.log('isAuthenticated', isAuthenticated);
-  return isAuthenticated ? children : <Navigate to="/dashboard" replace />;
+  return isAuthenticated ? children : <Navigate to="/signin" replace />;
 }
