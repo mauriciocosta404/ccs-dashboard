@@ -69,7 +69,7 @@ const Contact = () => {
                 <Mail className="h-6 w-6 text-indigo-600 mt-1" />
                 <div className="ml-4">
                   <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-                  <a href="mailto:adonaiccs@hotmail.com" className="text-gray-600">adonaiccs@hotmail.com</a>
+                  <a href="mailto:secretaria.ccsadonai@gmail.com.com" className="text-gray-600">secretaria.ccsadonai@gmail.com.com</a>
                 </div>
               </div>
               <div className="flex items-start">
