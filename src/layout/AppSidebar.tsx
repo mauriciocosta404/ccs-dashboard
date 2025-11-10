@@ -99,7 +99,7 @@ const AppSidebar: React.FC = () => {
         { name: "Todos", path: "/members", pro: false },
         { name: "Baptizados", path: "/baptized-members", pro: false },
         { name: "Não baptizados", path: "/non-baptized-members", pro: false },
-        { name: "Lideres", path: "/basic-tables", pro: false },
+        //{ name: "Lideres", path: "/basic-tables", pro: false },
       ],
     },
     {
@@ -142,7 +142,7 @@ const AppSidebar: React.FC = () => {
       name: "EBD",
       icon: <Users/>,
       subItems: [
-        { name: "Ver professores", path: "/teachers", pro: false },
+        //{ name: "Ver professores", path: "/teachers", pro: false },
         { name: "Ver alunos", path: "/students", pro: false },
         { name: "Criar aluno", path: "/register-student", pro: false },
       ],
