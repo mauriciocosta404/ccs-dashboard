@@ -10,6 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import httpClient from "../../api/httpClient";
 import ComponentCard from "../../components/common/ComponentCard";
 import { Edit, Trash } from "lucide-react";
+import { toast } from "react-toastify";
 
 interface Event {
   id: string;
@@ -56,6 +57,21 @@ export default function ListEvents() {
   const truncateDescription = (description: string, maxLength: number = 50) => {
     if (description?.length <= maxLength) return description;
     return `${description?.substring(0, maxLength)}...`;
+  };
+
+  const handleDeleteEvent = async (id: string) => {
+    if (!confirm("Tem certeza que deseja excluir este evento?")) {
+      return;
+    }
+    try {
+      await httpClient.delete(`/events/${id}`);
+      setEvents(prev => prev.filter(item => item.id !== id));
+      toast.success("Evento excluído com sucesso!");
+    }
+    catch (error) {
+      console.error("Erro ao excluir evento:", error);
+      toast.error("Erro ao excluir evento");
+    }
   };
 
   return (
@@ -140,7 +156,7 @@ export default function ListEvents() {
                         <button className="text-blue-500 hover:text-blue-700">
                           <Edit size={20} />
                         </button>
-                        <button className="text-red-500 hover:text-red-700">
+                        <button onClick={() => handleDeleteEvent(event.id)} className="text-red-500 hover:text-red-700">
                           <Trash size={20} />
                         </button>
                       </TableCell>
