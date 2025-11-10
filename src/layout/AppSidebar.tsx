@@ -79,7 +79,7 @@ const AppSidebar: React.FC = () => {
     },
     {
       icon: <CalenderIcon />,
-      name: "Calendar",
+      name: "Calendario",
       path: "/calendar",
     },
     {
@@ -87,11 +87,11 @@ const AppSidebar: React.FC = () => {
       name: "Perfil",
       path: `/profile/${user?.id}`,
     },
-    {
+    /*{
       name: "Forms",
       icon: <ListIcon />,
       subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
-    },
+    },*/
     {
       name: "Membros",
       icon: <UserCircleIcon/>,
