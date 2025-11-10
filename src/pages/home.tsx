@@ -10,6 +10,7 @@ import Contact from '../components/landing-page/Contact';
 import { Maps } from '../components/landing-page/map';
 import Footer from '../components/landing-page/footer';
 import AIChat from '../components/landing-page/AIChat';
+import WhatsAppButton from '../components/landing-page/WhatsAppButton';
 
 function LandigPage() {
   return (
@@ -25,6 +26,7 @@ function LandigPage() {
       <Maps/>
       <Footer/>
       <AIChat />
+      <WhatsAppButton /> 
     </div>
   );
 }

@@ -10,19 +10,13 @@ const About = () => {
               Nossa História
             </h2>
             <p className="text-md text-gray-600 mb-6 text-justify">
-              Fundada em 1990, a Igreja Adonai Cenaculo da Salvaçãotem sido um farol de esperança em nossa
-              comunidade. Nossa jornada começou com um pequeno grupo de fiéis e cresceu
-              para se tornar uma família vibrante de crentes.
+            A Catedral Cenáculo da Salvação foi fundada no dia 12 de Março de 2017, pelo Pastor Carlos
+Felício e a Diaconisa Cesaltina Felício, que lideraram a igreja até o ano de 2020. A partir de
+Outubro de 2020, o Reverendo Pastor Manuel Panzo assumiu a liderança como Pastor Titular.
+Actualmente, a igreja conta com 1 Pastor Titular, 4 Diáconos e mais de 250 membros, incluindo
+crianças, adolescentes, jovens, homens e mulheres de diversas idades.
             </p>
-            <p className="text-md text-gray-600 mb-6 text-justify">
-              Nossos valores fundamentais são baseados no amor, na compaixão e no serviço
-              ao próximo. Acreditamos que cada pessoa é única e especial aos olhos de Deus.
-            </p>
-            <p className="text-md text-gray-600 text-justify">
-              Hoje, continuamos comprometidos com nossa missão de espalhar a mensagem de
-              Cristo e fazer a diferença em nossa comunidade através de diversos ministérios
-              e programas sociais.
-            </p>
+           
           </div>
           <div className="relative">
             <div className="aspect-video bg-gray-900 rounded-lg shadow-2xl overflow-hidden">

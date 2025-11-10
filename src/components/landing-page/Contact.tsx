@@ -62,14 +62,14 @@ const Contact = () => {
                 <Phone className="h-6 w-6 text-indigo-600 mt-1" />
                 <div className="ml-4">
                   <h3 className="text-lg font-semibold text-gray-900">Telefone</h3>
-                  <p className="text-gray-600">(11) 1234-5678</p>
+                  <a href="tel:+244931065964" className="text-gray-600">(+244) 931065964</a>
                 </div>
               </div>
               <div className="flex items-start">
                 <Mail className="h-6 w-6 text-indigo-600 mt-1" />
                 <div className="ml-4">
                   <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-                  <p className="text-gray-600">contato@igrejadapaz.com</p>
+                  <a href="mailto:adonaiccs@hotmail.com" className="text-gray-600">adonaiccs@hotmail.com</a>
                 </div>
               </div>
               <div className="flex items-start">
@@ -77,9 +77,8 @@ const Contact = () => {
                 <div className="ml-4">
                   <h3 className="text-lg font-semibold text-gray-900">Endereço</h3>
                   <p className="text-gray-600">
-                    Rua Example, 123<br />
-                    Cidade - Estado<br />
-                    CEP: 12345-678
+                    Bairro Inorade, estr. da Samba, Luanda<br />
+                    Cidade - Luanda<br />
                   </p>
                 </div>
               </div>

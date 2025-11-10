@@ -18,18 +18,16 @@ const AboutPastor = () => {
               Pastor Manuel Panzo
             </h2>
             <p className="text-md text-gray-600 mb-6 text-justify">
-              Com mais de 20 anos de dedicação ao ministério, o Pastor Manuel Panzo tem guiado nossa
-              congregação com sabedoria, compaixão e um profundo compromisso com os ensinamentos
-              de Cristo.
+            O Pastor Manuel Panzo é o Vice-Presidente da Adonai Igreja Evangélica Pentecostal
+Internacional, onde tem servido com zelo, integridade e dedicação há nove anos. Natural do
+município do Cazenga, província de Luanda – Angola, rendeu sua vida a Cristo aos 8 anos
+de idade e foi ordenado ao ministério pastoral no ano de 2016.
             </p>
             <p className="text-md text-gray-600 mb-6 text-justify">
-              Formado em Teologia pela Universidade Teológica, ele combina conhecimento bíblico
-              com uma abordagem moderna e acolhedora.
+            É casado com a Diaconisa Teresa Panzo, sua companheira de ministério, com quem tem dois
+            filhos. Juntos, lideram a Catedral Cenáculo da Salvação, onde têm sido instrumentos de Deus
+            para edificação de vidas e na expansão do Reino de Deus.
             </p>
-            <div className="text-md text-gray-600 text-justify">
-              "Nossa missão é criar um ambiente onde todos possam experimentar o amor de Deus
-              e crescer em sua jornada espiritual."
-            </div>
           </div>
         </div>
       </div>
