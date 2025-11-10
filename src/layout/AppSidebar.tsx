@@ -17,6 +17,7 @@ import { useSidebar } from "../context/SidebarContext";
 import { AlignLeft, Users } from "lucide-react";
 import useAuth from "../auth/useAuth";
 import CreateMinistryModal from "../components/ministry/CreateMinistryModal";
+import httpClient from "../api/httpClient";
 
 type NavItem = {
   name: string;
@@ -46,95 +47,107 @@ const AppSidebar: React.FC = () => {
   );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [isCreateMinistryModalOpen, setIsCreateMinistryModalOpen] = useState(false);
+  const [ministries, setMinistries] = useState<Array<{ id: string; name: string }>>([]);
 
-  // const isActive = (path: string) => location.pathname === path;
   const isActive = useCallback(
     (path: string) => location.pathname === path,
     [location.pathname]
   );
 
-  
-const navItems: NavItem[] = [
-  {
-    icon: <GridIcon />,
-    name: "Dashboard",
-    path: "/dashboard",
-  },
-  {
-    icon: <CalenderIcon />,
-    name: "Calendar",
-    path: "/calendar",
-  },
-  {
-    icon: <UserCircleIcon />,
-    name: "Perfil",
-    path: `/profile/${user?.id}`,
-  },
-  {
-    name: "Forms",
-    icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
-  },
-  {
-    name: "Membros",
-    icon: <UserCircleIcon/>,
-    subItems: [
-      { name: "Todos", path: "/members", pro: false },
-      { name: "Baptizados", path: "/baptized-members", pro: false },
-      { name: "Não baptizados", path: "/non-baptized-members", pro: false },
-      { name: "Lideres", path: "/basic-tables", pro: false },
-    ],
-  },
-  {
-    name: "Ministérios",
-    icon: <UserCircleIcon/>,
-    subItems: [
-      { name: "Criar Ministério", onClick: () => setIsCreateMinistryModalOpen(true) },
-      { name: "Louvor", path: "/form-elements", pro: false },
-      { name: "Intercessão", path: "/form-elements", pro: false },
-      { name: "Protocolo", path: "/form-elements", pro: false },
-      { name: "Mídia", path: "/form-elements", pro: false },
-      { name: "EBD", path: "/form-elements", pro: false },
-      { name: "Coreografia", path: "/form-elements", pro: false },
-      { name: "Valentes de Davi", path: "/form-elements", pro: false },
-      { name: "Mulheres em acção", path: "/form-elements", pro: false },
-      { name: "Jovens com propósito", path: "/form-elements", pro: false },
-    ],
-  },
-  {
-    name: "Actividades",
-    icon: <CalenderIcon/>,
-    subItems: [
-      { name: "Ver", path: "/events", pro: false },
-      { name: "Criar", path: "/register-event", pro: false },
-    ],
-  },
-  {
-    name: "Dias de culto",
-    icon: <TimeIcon/>,
-    subItems: [
-      { name: "Ver", path: "/service-days", pro: false },
-      { name: "Criar", path: "/register-service-day", pro: false },
-    ],
-  },
-  {
-    name: "Pregações",
-    icon: <VideoIcon/>,
-    subItems: [
-      { name: "Ver", path: "/sermons", pro: false },
-      { name: "Criar", path: "/register-sermon", pro: false },
-    ],
-  },
-  {
-    name: "EBD",
-    icon: <Users/>,
-    subItems: [
-      { name: "Ver professores", path: "/teachers", pro: false },
-      { name: "Ver alunos", path: "/students", pro: false },
-      { name: "Criar aluno", path: "/register-student", pro: false },
-    ],
-  },
-];
+  // Buscar ministérios da API
+  const fetchMinistries = useCallback(async () => {
+    try {
+      const response = await httpClient.get<Array<{ id: string; name: string }>>("/ministeries");
+      setMinistries(response.data || []);
+    } catch (error) {
+      console.error("Erro ao buscar ministérios:", error);
+      setMinistries([]);
+    }
+  }, []);
+
+  // Carregar ministérios ao montar o componente
+  useEffect(() => {
+    fetchMinistries();
+  }, [fetchMinistries]);
+
+  // Definir navItems dentro do componente para ter acesso a ministries
+  const navItems: NavItem[] = [
+    {
+      icon: <GridIcon />,
+      name: "Dashboard",
+      path: "/dashboard",
+    },
+    {
+      icon: <CalenderIcon />,
+      name: "Calendar",
+      path: "/calendar",
+    },
+    {
+      icon: <UserCircleIcon />,
+      name: "Perfil",
+      path: `/profile/${user?.id}`,
+    },
+    {
+      name: "Forms",
+      icon: <ListIcon />,
+      subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+    },
+    {
+      name: "Membros",
+      icon: <UserCircleIcon/>,
+      subItems: [
+        { name: "Todos", path: "/members", pro: false },
+        { name: "Baptizados", path: "/baptized-members", pro: false },
+        { name: "Não baptizados", path: "/non-baptized-members", pro: false },
+        { name: "Lideres", path: "/basic-tables", pro: false },
+      ],
+    },
+    {
+      name: "Ministérios",
+      icon: <UserCircleIcon/>,
+      subItems: [
+        { name: "Criar Ministério", onClick: () => setIsCreateMinistryModalOpen(true) },
+        ...ministries.map((ministry) => ({
+          name: ministry.name,
+          path: `/ministery/${ministry.id}`,
+          pro: false,
+        })),
+      ],
+    },
+    {
+      name: "Actividades",
+      icon: <CalenderIcon/>,
+      subItems: [
+        { name: "Ver", path: "/events", pro: false },
+        { name: "Criar", path: "/register-event", pro: false },
+      ],
+    },
+    {
+      name: "Dias de culto",
+      icon: <TimeIcon/>,
+      subItems: [
+        { name: "Ver", path: "/service-days", pro: false },
+        { name: "Criar", path: "/register-service-day", pro: false },
+      ],
+    },
+    {
+      name: "Pregações",
+      icon: <VideoIcon/>,
+      subItems: [
+        { name: "Ver", path: "/sermons", pro: false },
+        { name: "Criar", path: "/register-sermon", pro: false },
+      ],
+    },
+    {
+      name: "EBD",
+      icon: <Users/>,
+      subItems: [
+        { name: "Ver professores", path: "/teachers", pro: false },
+        { name: "Ver alunos", path: "/students", pro: false },
+        { name: "Criar aluno", path: "/register-student", pro: false },
+      ],
+    },
+  ];
 
 const othersItems: NavItem[] = [
   /*{
@@ -415,6 +428,7 @@ const othersItems: NavItem[] = [
       <CreateMinistryModal
         isOpen={isCreateMinistryModalOpen}
         onClose={() => setIsCreateMinistryModalOpen(false)}
+        onSuccess={fetchMinistries}
       />
     </aside>
   );

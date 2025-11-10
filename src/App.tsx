@@ -39,6 +39,7 @@ import EbdStudentsList from "./pages/ebd/students-list";
 import RegisterEbdStudents from "./pages/ebd/register-students";
 import { Sermons } from "./pages/sermons";
 import TermsAndConditions from "./pages/terms-and-conditions";
+import MinistryDetails from "./pages/ministry/MinistryDetails";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -89,6 +90,9 @@ export default function App() {
               <Route path="/students" element={<PrivateRoute  children={<EbdStudentsList />}/>} />
               {/* <Route path="/teachers" element={<PrivateRoute  children={<EbdTeachersList />}/>} /> */}
               <Route path="/register-student" element={<PrivateRoute  children={<RegisterEbdStudents />}/>} />
+
+              {/* Ministry */}
+              <Route path="/ministery/:id" element={<PrivateRoute  children={<MinistryDetails />}/>} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />
