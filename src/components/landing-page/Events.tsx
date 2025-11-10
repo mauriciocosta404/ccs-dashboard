@@ -15,18 +15,6 @@ interface Evento {
 }
 
 // API para buscar eventos
-const eventsApi = {
-  getAllEvents: async (): Promise<Evento[]> => {
-    try {
-      const response = await httpClient.get<Evento[]>("/events");
-      const data = response.data;
-      return data;
-    } catch (error) {
-      console.error("Erro ao buscar eventos:", error);
-      throw error;
-    }
-  }
-};
 
 const Events = () => {
   const [events, setEvents] = useState<Evento[]>([]);
@@ -89,36 +77,23 @@ const Events = () => {
     return defaultImages[Math.floor(Math.random() * defaultImages.length)];
   };
 
-  // Carregar eventos
-  const loadEvents = async () => {
-    setLoading(true);
+  const fetchEvents = async () => {
     try {
-      const data = await eventsApi.getAllEvents();
-      
-      // Filtrar apenas eventos futuros ou recentes (últimos 30 dias)
-      const now = new Date();
-      const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
-      
-      const filteredData = data.filter(event => {
-        const eventDate = new Date(event.dataInicio);
-        return eventDate >= thirtyDaysAgo;
-      });
-      
-      // Ordenar eventos por data (mais próximos primeiro)
-      const sortedData = filteredData.sort((a, b) => 
-        new Date(a.dataInicio).getTime() - new Date(b.dataInicio).getTime()
-      );
-      
-      setEvents(sortedData);
+      setLoading(true);
+      const response = await httpClient.get<Evento[]>("/events");
+      const data = response.data;
+      setEvents(data);
+      setLoading(false);
     } catch (error) {
-      console.error('Erro ao carregar eventos:', error);
-      setEvents([]);
+      console.error("Erro ao buscar eventos:", error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  };
+  }
 
   useEffect(() => {
-    loadEvents();
+    fetchEvents();
   }, []);
 
   if (loading) {
@@ -152,6 +127,7 @@ const Events = () => {
         </div>
 
         {events.length === 0 ? (
+          console.log(events),
           <div className="text-center py-12">
             <Calendar className="h-16 w-16 mx-auto mb-4 text-gray-300" />
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
