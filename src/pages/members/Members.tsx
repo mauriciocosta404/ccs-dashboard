@@ -10,6 +10,8 @@ import {
 import Skeleton from '@mui/material/Skeleton';
 import httpClient from "../../api/httpClient";
 import ComponentCard from "../../components/common/ComponentCard";
+import Button from "../../components/ui/button/Button";
+import AddMemberModal from "../../components/members/AddMemberModal";
 
 interface Member {
   id: string;
@@ -23,25 +25,38 @@ interface Member {
 export default function Members() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
+
+  const fetchMembers = async () => {
+    setLoading(true);
+    try {
+      const response = await httpClient.get<Member[]>("/users");
+      setMembers(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar membros:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await httpClient.get<Member[]>("/users");
-        setMembers(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar membros batizados:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    
     fetchMembers();
-    }, []);
+  }, []);
 
   return (
-    <ComponentCard title="Membros">
+    <>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white/90">
+          Membros
+        </h2>
+        <Button
+          size="sm"
+          onClick={() => setIsAddMemberModalOpen(true)}
+        >
+          Adicionar Membro
+        </Button>
+      </div>
+      <ComponentCard title="Membros">
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
         <div className="max-w-full overflow-x-auto">
             <div className="min-w-[600px]">
@@ -101,6 +116,12 @@ export default function Members() {
             </div>
         </div>
         </div>
-    </ComponentCard>
+      </ComponentCard>
+      <AddMemberModal
+        isOpen={isAddMemberModalOpen}
+        onClose={() => setIsAddMemberModalOpen(false)}
+        onSuccess={fetchMembers}
+      />
+    </>
   );
 }

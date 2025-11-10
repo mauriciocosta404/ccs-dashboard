@@ -123,7 +123,6 @@ export default function AddMemberModal({
                     </div>
                   ) : (
                     <Select
-                      id="user-select"
                       name="userId"
                       options={selectOptions}
                       placeholder="Selecione um usuário"
