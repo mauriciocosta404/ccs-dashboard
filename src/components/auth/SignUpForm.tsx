@@ -323,7 +323,7 @@ export default function SignUpForm() {
                   <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
                     By creating an account means you agree to the{" "}
                     <span className="text-gray-800 dark:text-white/90">
-                      Terms and Conditions,
+                      <Link to="/terms-and-conditions">Terms and Conditions</Link>,
                     </span>{" "}
                     and our{" "}
                     <span className="text-gray-800 dark:text-white">

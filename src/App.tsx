@@ -38,6 +38,7 @@ import ServiceDayList from "./pages/services-day/service-day-list";
 import EbdStudentsList from "./pages/ebd/students-list";
 import RegisterEbdStudents from "./pages/ebd/register-students";
 import { Sermons } from "./pages/sermons";
+import TermsAndConditions from "./pages/terms-and-conditions";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -60,6 +61,7 @@ export default function App() {
             <Route element={<DefaultLayout />}>
               <Route path="/bible" element={<Bible />} />
               <Route path="/sermons" element={<Sermons />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             </Route>
 
             {/* Dashboard Layout */}
