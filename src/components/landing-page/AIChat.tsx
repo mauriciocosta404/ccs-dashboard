@@ -124,7 +124,7 @@ const AIChat = () => {
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 transition-all duration-300 flex flex-col ${
+    <div className={`fixed bottom-6 right-6 z-100 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 transition-all duration-300 flex flex-col ${
       isMinimized ? 'w-80 h-16' : 'w-full md:w-96 h-[70vh] md:h-[600px] max-w-[calc(100vw-48px)]'
     } ${
       isOpen && !isMinimized ? 'left-6 md:left-auto' : ''
