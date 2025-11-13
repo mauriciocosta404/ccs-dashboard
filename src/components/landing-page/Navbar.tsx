@@ -12,7 +12,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <span className="text-xl font-semibold text-gray-900 w-[6rem]"><img src="/assets/logo.png" alt="" /></span>
+            <a href="/#home" className="text-xl font-semibold text-gray-900 w-[6rem]"><img src="/assets/logo.png" alt="" /></a>
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
