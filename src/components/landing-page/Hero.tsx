@@ -44,7 +44,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="h-screen relative overflow-hidden">
+    <section id="home" className="h-screen relative overflow-hidden">
       {/* Slides */}
       <div className="relative h-full">
         {slides.map((slide, index) => (
@@ -119,7 +119,7 @@ const Hero = () => {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
