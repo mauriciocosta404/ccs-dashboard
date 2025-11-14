@@ -1,4 +1,4 @@
-
+import { ReactTyped } from 'react-typed';
 
 const AboutPastor = () => {
   return (
@@ -15,10 +15,16 @@ const AboutPastor = () => {
           </div>
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Pastor Manuel Panzo
+              <ReactTyped 
+                className="md:text-3xl sm:text-1xl text-xl font-bold" 
+                strings={['Pastor Manuel Panzo']} 
+                typeSpeed={120} 
+                backSpeed={140} 
+                loop
+              />
             </h2>
             <p className="text-md text-gray-600 mb-6 text-justify">
-            O Reverendo Manuel Panzo é o Vice-Presidente da Adonai Igreja Evangélica Pentecostal
+            O Reverendo Manuel Zola Panzo é o Vice-Presidente da Adonai Igreja Evangélica Pentecostal
 Internacional, onde tem servido com zelo, integridade e dedicação há nove anos. Natural do
 município do Cazenga, província de Luanda – Angola, rendeu sua vida a Cristo aos 8 anos
 de idade e foi ordenado ao ministério pastoral no ano de 2016.
