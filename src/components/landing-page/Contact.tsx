@@ -76,10 +76,10 @@ const Contact = () => {
                 <MapPin className="h-6 w-6 text-indigo-600 mt-1" />
                 <div className="ml-4">
                   <h3 className="text-lg font-semibold text-gray-900">Endereço</h3>
-                  <p className="text-gray-600">
+                  <a href="https://www.google.com/maps/place/ADONAI+Cen%C3%A1culo+da+Salva%C3%A7%C3%A3o/@-8.8837232,13.1849519,17z/data=!3m1!4b1!4m6!3m5!1s0x1a51f5f0452aa48f:0x7ae5463351910f4b!8m2!3d-8.8837232!4d13.1849519!16s%2Fg%2F11fll24k2k?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" className="text-gray-600">
                     Bairro Inorade, estr. da Samba, Luanda<br />
                     Cidade - Luanda<br />
-                  </p>
+                  </a>
                 </div>
               </div>
             </div>
