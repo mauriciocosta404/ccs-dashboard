@@ -18,7 +18,7 @@ const AboutPastor = () => {
               Pastor Manuel Panzo
             </h2>
             <p className="text-md text-gray-600 mb-6 text-justify">
-            O Pastor Manuel Panzo é o Vice-Presidente da Adonai Igreja Evangélica Pentecostal
+            O Reverendo Manuel Panzo é o Vice-Presidente da Adonai Igreja Evangélica Pentecostal
 Internacional, onde tem servido com zelo, integridade e dedicação há nove anos. Natural do
 município do Cazenga, província de Luanda – Angola, rendeu sua vida a Cristo aos 8 anos
 de idade e foi ordenado ao ministério pastoral no ano de 2016.
