@@ -51,7 +51,9 @@ const Services = () => {
     const imageMap: Record<number, string> = {
       0: '/assets/cultos/0.jpeg',  // Domingo
       2: '/assets/cultos/2.jpeg',  // Terça
+      3: '/assets/cultos/3.jpeg',  // Quarta
       4: '/assets/cultos/4.jpeg',  // Quinta
+      5: '/assets/cultos/5.jpeg',  // Sexta
       6: '/assets/cultos/6.jpeg',  // Sábado
     };
     return imageMap[weekday] || '';
