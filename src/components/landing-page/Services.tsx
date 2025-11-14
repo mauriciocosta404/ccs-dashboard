@@ -46,6 +46,17 @@ const Services = () => {
     return weekdays[weekday] || 'Desconhecido';
   };
 
+  // Função para obter a imagem de fundo baseada no dia da semana
+  const getBackgroundImage = (weekday: number): string => {
+    const imageMap: Record<number, string> = {
+      0: '/assets/cultos/0.jpeg',  // Domingo
+      2: '/assets/cultos/2.jpeg',  // Terça
+      4: '/assets/cultos/4.jpeg',  // Quinta
+      6: '/assets/cultos/6.jpeg',  // Sábado
+    };
+    return imageMap[weekday] || '';
+  };
+
   // Função para formatar horário
   const formatTime = (time: string): string => {
     try {
@@ -117,24 +128,40 @@ const Services = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {services.map((service, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition duration-300"
-                >
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                    {getWeekdayName(service.weekday)}
-                  </h3>
-                  <div className="flex items-center justify-center mb-4">
-                    <Clock className="h-5 w-5 text-indigo-600 mr-2" />
-                    <span className="text-lg text-gray-700">{formatTime(service.time)}</span>
+              {services.map((service, index) => {
+                const backgroundImage = getBackgroundImage(service.weekday);
+                return (
+                  <div
+                    key={index}
+                    className="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition duration-300 relative overflow-hidden"
+                    style={{
+                      backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  >
+                    {/* Overlay escuro para melhorar legibilidade do texto */}
+                    {backgroundImage && (
+                      <div className="absolute inset-0 bg-black/70 bg-opacity-20 rounded-lg"></div>
+                    )}
+                    {/* Conteúdo com posição relativa para ficar acima do overlay */}
+                    <div className="relative z-10">
+                      <h3 className="text-xl font-semibold text-white mb-4">
+                        {getWeekdayName(service.weekday)}
+                      </h3>
+                      <div className="flex items-center justify-center mb-4">
+                        <Clock className="h-5 w-5 text-white mr-2" />
+                        <span className="text-lg text-white">{formatTime(service.time)}</span>
+                      </div>
+                      <p className="text-white">{service.name}</p>
+                      {service.description && (
+                        <p className="text-sm text-gray-200 mt-2">{service.description}</p>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-gray-600">{service.name}</p>
-                  {service.description && (
-                    <p className="text-sm text-gray-500 mt-2">{service.description}</p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </>
         )}

@@ -11,6 +11,12 @@ import httpClient from "../../api/httpClient";
 import ComponentCard from "../../components/common/ComponentCard";
 import { Edit, Trash } from "lucide-react";
 import { toast } from "react-toastify";
+import { Modal } from "../../components/ui/modal";
+import { useModal } from "../../hooks/useModal";
+import Label from "../../components/form/Label";
+import Input from "../../components/form/input/InputField";
+import TextArea from "../../components/form/input/TextArea";
+import Button from "../../components/ui/button/Button";
 
 interface ServiceDay {
   id: string;
@@ -35,6 +41,10 @@ const WEEKDAYS = [
 export default function ServiceDayList() {
   const [serviceDays, setServiceDays] = useState<ServiceDay[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isOpen, openModal, closeModal } = useModal();
+  const [editingService, setEditingService] = useState<ServiceDay | null>(null);
+  const [formData, setFormData] = useState<Partial<ServiceDay>>({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchServiceDays = async () => {
@@ -72,6 +82,27 @@ export default function ServiceDayList() {
     }
   };
 
+  // Função para formatar horário para o input time (HH:mm)
+  const formatTimeForInput = (time: string): string => {
+    try {
+      // Se o time já estiver no formato HH:MM, retorna assim
+      if (time.includes(':') && time.length <= 5) {
+        return time;
+      }
+      
+      // Se for um horário completo (ex: "19:30:00"), extrai apenas HH:MM
+      const timeParts = time.split(':');
+      if (timeParts.length >= 2) {
+        return `${timeParts[0]}:${timeParts[1]}`;
+      }
+      
+      return time;
+    } catch (error) {
+      console.error('Erro ao formatar horário:', error);
+      return time;
+    }
+  };
+
   const getWeekdayName = (weekday: number) => {
     return WEEKDAYS[weekday] || "Dia inválido";
   };
@@ -98,10 +129,64 @@ export default function ServiceDayList() {
   };
 
   const handleEdit = (serviceDay: ServiceDay) => {
-    // Aqui você pode implementar a navegação para a tela de edição
-    // ou abrir um modal de edição
-    console.log("Editando dia de culto:", serviceDay);
-    toast.info("Funcionalidade de edição será implementada em breve");
+    setEditingService(serviceDay);
+    setFormData({
+      name: serviceDay.name,
+      weekday: serviceDay.weekday,
+      time: formatTimeForInput(serviceDay.time),
+      description: serviceDay.description || '',
+    });
+    openModal();
+  };
+
+  // Função para salvar edição
+  const handleSave = async () => {
+    if (!editingService) return;
+
+    if (!formData.name || !formData.time) {
+      toast.error("Por favor, preencha o nome e o horário do culto.");
+      return;
+    }
+
+    // Validar formato do horário (HH:mm)
+    const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!timeRegex.test(formData.time as string)) {
+      toast.error("Por favor, insira um horário válido no formato HH:mm (ex: 19:30).");
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      await httpClient.put(`/service-days/${editingService.id}`, {
+        name: formData.name,
+        weekday: formData.weekday,
+        time: formData.time,
+        description: formData.description || null,
+      });
+
+      toast.success("Culto atualizado com sucesso!");
+      closeModal();
+      setEditingService(null);
+      setFormData({});
+      // Recarregar a lista
+      const response = await httpClient.get<ServiceDay[]>("/service-days");
+      setServiceDays(response.data);
+    } catch (error: any) {
+      console.error("Erro ao atualizar culto:", error);
+      toast.error(error?.response?.data?.message || "Erro ao atualizar culto. Tente novamente.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Função para fechar modal
+  const handleCloseModal = () => {
+    if (!saving) {
+      closeModal();
+      setEditingService(null);
+      setFormData({});
+    }
   };
 
   return (
@@ -219,6 +304,82 @@ export default function ServiceDayList() {
           </div>
         )}
       </div>
+
+      {/* Modal de Edição */}
+      <Modal isOpen={isOpen} onClose={handleCloseModal} className="max-w-[600px] m-4">
+        <div className="no-scrollbar relative w-full max-w-[600px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+          <div className="px-2 pr-14">
+            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+              Editar Culto
+            </h4>
+            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+              Atualize as informações do culto.
+            </p>
+          </div>
+          <form className="flex flex-col" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+            <div className="custom-scrollbar max-h-[450px] overflow-y-auto px-2 pb-3">
+              <div className="space-y-6">
+                <div>
+                  <Label htmlFor="edit-name">Nome do Culto</Label>
+                  <Input
+                    type="text"
+                    id="edit-name"
+                    value={formData.name || ''}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Ex: Culto de Domingo, Reunião de Oração..."
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-weekday">Dia da Semana</Label>
+                  <select
+                    id="edit-weekday"
+                    value={formData.weekday ?? 0}
+                    onChange={(e) => setFormData({ ...formData, weekday: parseInt(e.target.value) })}
+                    className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 bg-transparent text-gray-800 border-gray-300 focus:border-brand-300 focus:ring-brand-500/20 dark:border-gray-700 dark:focus:border-brand-800"
+                  >
+                    <option value={0}>Domingo</option>
+                    <option value={1}>Segunda-feira</option>
+                    <option value={2}>Terça-feira</option>
+                    <option value={3}>Quarta-feira</option>
+                    <option value={4}>Quinta-feira</option>
+                    <option value={5}>Sexta-feira</option>
+                    <option value={6}>Sábado</option>
+                  </select>
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-time">Horário</Label>
+                  <Input
+                    type="time"
+                    id="edit-time"
+                    value={formData.time || ''}
+                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label>Descrição (Opcional)</Label>
+                  <TextArea
+                    rows={4}
+                    value={formData.description || ''}
+                    onChange={(value: string) => setFormData({ ...formData, description: value })}
+                    placeholder="Ex: Culto com louvor, pregação da palavra e oração..."
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
+              <Button size="sm" variant="outline" onClick={handleCloseModal} disabled={saving}>
+                Cancelar
+              </Button>
+              <Button size="sm" onClick={handleSave} disabled={saving}>
+                {saving ? "Salvando..." : "Salvar Alterações"}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </ComponentCard>
   );
 }
