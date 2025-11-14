@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 const Gallery = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -56,13 +58,6 @@ const Gallery = () => {
     },
   ];
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 3) % images.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 3 + images.length) % images.length);
-  };
 
 
   return (
@@ -78,15 +73,30 @@ const Gallery = () => {
         </div>
 
         <div className="relative">
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * (100 / 3)}%)` }}
-            >
-              {images.map((image, index) => (
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            spaceBetween={16}
+            slidesPerView={1}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+            navigation={true}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            className="gallery-swiper"
+          >
+            {images.map((image, index) => (
+              <SwiperSlide key={index}>
                 <div
-                  key={index}
-                  className="min-w-[33.333%] px-4"
+                  className="px-2"
                   onClick={() => {
                     setLightboxIndex(index);
                     setLightboxOpen(true);
@@ -106,22 +116,9 @@ const Gallery = () => {
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200"
-          >
-            <ChevronLeft className="w-6 h-6 text-gray-800" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200"
-          >
-            <ChevronRight className="w-6 h-6 text-gray-800" />
-          </button>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <Lightbox

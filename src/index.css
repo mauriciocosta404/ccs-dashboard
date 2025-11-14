@@ -840,3 +840,49 @@ button, input, textarea {
 body {
   overscroll-behavior-y: contain;
 }
+
+/* Estilos customizados para os botões de navegação do Swiper na galeria */
+.gallery-swiper .swiper-button-next,
+.gallery-swiper .swiper-button-prev {
+  @apply h-12 w-12 rounded-full bg-white/95 text-indigo-600 shadow-xl backdrop-blur-md border border-indigo-200/50 transition-all duration-300 hover:bg-white hover:scale-110 hover:shadow-2xl hover:border-indigo-300;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-swiper .swiper-button-next:after,
+.gallery-swiper .swiper-button-prev:after {
+  @apply text-xl font-bold;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.gallery-swiper .swiper-button-prev {
+  left: 8px !important;
+}
+
+@media (min-width: 640px) {
+  .gallery-swiper .swiper-button-prev {
+    left: 16px !important;
+  }
+}
+
+.gallery-swiper .swiper-button-next {
+  right: 8px !important;
+}
+
+@media (min-width: 640px) {
+  .gallery-swiper .swiper-button-next {
+    right: 16px !important;
+  }
+}
+
+.gallery-swiper .swiper-button-next.swiper-button-disabled,
+.gallery-swiper .swiper-button-prev.swiper-button-disabled {
+  @apply opacity-30 cursor-not-allowed hover:scale-100 hover:shadow-xl;
+}
