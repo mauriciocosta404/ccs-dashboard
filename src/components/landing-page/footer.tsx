@@ -1,5 +1,6 @@
 
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-react';
+import { FaTiktok } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -14,14 +15,17 @@ const Footer = () => {
               Transformando vidas através do amor de Cristo e construindo uma comunidade de fé.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-indigo-500 transition-colors">
+              <a target="_blank" href="https://www.facebook.com/share/14NLGri8ULU/?mibextid=wwXIfr" className="hover:text-indigo-500 transition-colors">
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="hover:text-indigo-500 transition-colors">
+              <a target="_blank" href="https://www.instagram.com/adonai_cenaculo_salvacao?igsh=ZmtsYzhhb3Q2ZnRz" className="hover:text-indigo-500 transition-colors">
                 <Instagram className="h-6 w-6" />
               </a>
-              <a href="#" className="hover:text-indigo-500 transition-colors">
+              <a target="_blank" href="https://youtube.com/@cenaculodasalvacaoadonai3628?si=WO4RntlYg2CZ5L9a" className="hover:text-indigo-500 transition-colors">
                 <Youtube className="h-6 w-6" />
+              </a>
+              <a target="_blank" href="https://www.tiktok.com/@adonai_cenaculo_salvacao?_r=1&_t=ZM-91I7FLYtoPk" className="hover:text-indigo-500 transition-colors">
+                <FaTiktok className="h-6 w-6" />
               </a>
             </div>
           </div>
@@ -54,15 +58,15 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center">
                 <MapPin className="h-5 w-5 mr-2 text-indigo-500" />
-                <span>Bairro Inorade, ENAPP</span>
+                <a href="https://www.google.com/maps/place/ADONAI+Cen%C3%A1culo+da+Salva%C3%A7%C3%A3o/@-8.8837232,13.1849519,17z/data=!3m1!4b1!4m6!3m5!1s0x1a51f5f0452aa48f:0x7ae5463351910f4b!8m2!3d-8.8837232!4d13.1849519!16s%2Fg%2F11fll24k2k?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" className="text-gray-600">Bairro Inorade, ENAPP</a>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 mr-2 text-indigo-500" />
-                <span>(+244) 924335636</span>
+                <a href="tel:+244924335636" className="text-gray-600">(+244) 924335636</a>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-indigo-500" />
-                <span>secretaria.ccsadonai@gmail.com</span>
+                <a href="mailto:secretaria.ccsadonai@gmail.com" className="text-gray-600">secretaria.ccsadonai@gmail.com</a>
               </li>
             </ul>
           </div>
