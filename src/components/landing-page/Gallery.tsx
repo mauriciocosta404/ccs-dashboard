@@ -3,8 +3,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
-import 'swiper/css';
-import 'swiper/css/navigation';
 
 const Gallery = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
