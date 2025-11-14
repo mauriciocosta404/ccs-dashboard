@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Loader } from 'lucide-react';
 import httpClient from '../../api/httpClient';
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
 
 // Interfaces
 interface Evento {
@@ -19,6 +21,8 @@ interface Evento {
 const Events = () => {
   const [events, setEvents] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   // Função para formatar o intervalo de datas
   const formatDateRange = (dataInicio: string, dataFim?: string): string => {
@@ -138,29 +142,53 @@ const Events = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {events.map((event) => (
-              <div key={event.id} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
-                <img
-                  src={getEventImage(event.flyerUrl)}
-                  alt={event.titulo}
-                  className="w-full h-48 object-cover object-top"
-                />
-                <div className="p-6">
-                  <div className="flex items-center text-indigo-600 mb-2">
-                    <Calendar className="h-5 w-5 mr-2" />
-                    <span>{formatDateRange(event.dataInicio, event.dataFim)}</span>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {events.map((event, index) => (
+                <div 
+                  key={event.id} 
+                  className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300 cursor-pointer"
+                  onClick={() => {
+                    setLightboxIndex(index);
+                    setLightboxOpen(true);
+                  }}
+                >
+                  <img
+                    src={getEventImage(event.flyerUrl)}
+                    alt={event.titulo}
+                    className="w-full h-48 object-cover object-top"
+                  />
+                  <div className="p-6">
+                    <div className="flex items-center text-indigo-600 mb-2">
+                      <Calendar className="h-5 w-5 mr-2" />
+                      <span>{formatDateRange(event.dataInicio, event.dataFim)}</span>
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-900 mb-2">
+                      {event.titulo}
+                    </h3>
+                    <p className="text-gray-600 text-xs">
+                      {event.descricao}
+                    </p>
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900 mb-2">
-                    {event.titulo}
-                  </h3>
-                  <p className="text-gray-600 text-xs">
-                    {event.descricao}
-                  </p>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+            
+            <Lightbox
+              open={lightboxOpen}
+              close={() => setLightboxOpen(false)}
+              index={lightboxIndex}
+              slides={events.map((event) => ({
+                src: getEventImage(event.flyerUrl),
+                alt: event.titulo,
+                title: event.titulo,
+                description: `${formatDateRange(event.dataInicio, event.dataFim)} - ${event.descricao}`
+              }))}
+              controller={{
+                closeOnBackdropClick: true
+              }}
+            />
+          </>
         )}
       </div>
     </section>

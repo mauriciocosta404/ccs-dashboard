@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
 
 const Gallery = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalImage, setModalImage] = useState<number | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const images = [
     {
@@ -62,27 +64,6 @@ const Gallery = () => {
     setCurrentSlide((prev) => (prev - 3 + images.length) % images.length);
   };
 
-  const openModal = (index: number) => {
-    setModalImage(index);
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setModalImage(null);
-  };
-
-  const nextImage = () => {
-    if (modalImage !== null) {
-      setModalImage((modalImage + 1) % images.length);
-    }
-  };
-
-  const prevImage = () => {
-    if (modalImage !== null) {
-      setModalImage((modalImage - 1 + images.length) % images.length);
-    }
-  };
 
   return (
     <section id="gallery" className="py-20 bg-white">
@@ -106,7 +87,10 @@ const Gallery = () => {
                 <div
                   key={index}
                   className="min-w-[33.333%] px-4"
-                  onClick={() => openModal(index)}
+                  onClick={() => {
+                    setLightboxIndex(index);
+                    setLightboxOpen(true);
+                  }}
                 >
                   <div className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer">
                     <img
@@ -140,45 +124,20 @@ const Gallery = () => {
           </button>
         </div>
 
-        {/* Modal */}
-        {modalOpen && modalImage !== null && (
-          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-            <div className="relative w-full max-w-6xl mx-4">
-              <button
-                onClick={closeModal}
-                className="absolute -top-12 right-0 text-white hover:text-gray-300"
-              >
-                <X className="w-8 h-8" />
-              </button>
-              
-              <div className="relative">
-                <img
-                  src={images[modalImage].url}
-                  alt={images[modalImage].title}
-                  className="w-full h-auto max-h-[80vh] object-contain"
-                />
-                
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200"
-                >
-                  <ChevronLeft className="w-6 h-6 text-gray-800" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200"
-                >
-                  <ChevronRight className="w-6 h-6 text-gray-800" />
-                </button>
-              </div>
-              
-              <div className="text-white text-center mt-4">
-                <h3 className="text-2xl font-semibold mb-2">{images[modalImage].title}</h3>
-                <p className="text-lg">{images[modalImage].description}</p>
-              </div>
-            </div>
-          </div>
-        )}
+        <Lightbox
+          open={lightboxOpen}
+          close={() => setLightboxOpen(false)}
+          index={lightboxIndex}
+          slides={images.map((image) => ({
+            src: image.url,
+            alt: image.title,
+            title: image.title,
+            description: image.description
+          }))}
+          controller={{
+            closeOnBackdropClick: true
+          }}
+        />
       </div>
     </section>
   );
