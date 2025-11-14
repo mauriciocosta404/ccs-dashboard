@@ -7,7 +7,7 @@ const Hero = () => {
   const slides = [
     {
       image: '/assets/banner1.jpg',
-      title: 'Bem-vindo à Igreja Adonai Cenáculo da salvação',
+      title: 'Bem-vindo à Igreja Adonai Cenáculo da Salvação',
       subtitle: 'A olaria de Deus'
     },
     {
