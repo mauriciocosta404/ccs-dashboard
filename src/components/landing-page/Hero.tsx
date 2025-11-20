@@ -47,41 +47,46 @@ const Hero = () => {
     <section className="h-screen relative overflow-hidden">
       <div id="home"></div>
       {/* Slides */}
-      <div className="relative h-full">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
+      <div className="relative h-full overflow-hidden">
+        <div 
+          className="flex h-full transition-transform duration-700 ease-in-out"
+          style={{ 
+            transform: `translateX(-${currentSlide * 100}%)`
+          }}
+        >
+          {slides.map((slide, index) => (
             <div
-              className="h-full bg-cover bg-center"
-              style={{ backgroundImage: `url('${slide.image}')` }}
+              key={index}
+              className="min-w-full h-full flex-shrink-0"
             >
-              {/* Overlay escuro */}
-              <div className="absolute inset-0 bg-black opacity-60"></div>
-              
-              {/* Conteúdo central */}
-              <div className="relative h-full flex items-center justify-center text-center px-4 z-10">
-                <div className="max-w-4xl mx-auto">
-                  <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
-                    {slide.title}
-                  </h1>
-                  <p className="text-xl md:text-2xl text-white mb-8 animate-fade-in-delay">
-                    {slide.subtitle}
-                  </p>
-                  <a
-                    href="#services"
-                    className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-300 animate-fade-in-delay-2"
-                  >
-                    Nossos Cultos
-                  </a>
+              <div
+                className="h-full w-full bg-cover bg-center relative"
+                style={{ backgroundImage: `url('${slide.image}')` }}
+              >
+                {/* Overlay escuro */}
+                <div className="absolute inset-0 bg-black opacity-60"></div>
+                
+                {/* Conteúdo central */}
+                <div className="relative h-full flex items-center justify-center text-center px-4 z-10">
+                  <div className="max-w-4xl mx-auto">
+                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
+                      {slide.title}
+                    </h1>
+                    <p className="text-xl md:text-2xl text-white mb-8 animate-fade-in-delay">
+                      {slide.subtitle}
+                    </p>
+                    <a
+                      href="#services"
+                      className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-300 animate-fade-in-delay-2"
+                    >
+                      Nossos Cultos
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Botões de navegação */}
