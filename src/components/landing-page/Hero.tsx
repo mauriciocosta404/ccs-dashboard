@@ -47,17 +47,19 @@ const Hero = () => {
     <section className="h-screen relative overflow-hidden">
       <div id="home"></div>
       {/* Slides */}
-      <div className="relative h-full overflow-hidden">
+      <div className="relative h-full overflow-hidden w-full">
         <div 
           className="flex h-full transition-transform duration-700 ease-in-out"
           style={{ 
-            transform: `translateX(-${currentSlide * 100}%)`
+            transform: `translateX(-${currentSlide * 100}vw)`,
+            width: `${slides.length * 100}vw`
           }}
         >
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="min-w-full h-full flex-shrink-0"
+              className="h-full flex-shrink-0"
+              style={{ width: '100vw' }}
             >
               <div
                 className="h-full w-full bg-cover bg-center relative"
