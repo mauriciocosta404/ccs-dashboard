@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="backdrop-blur-md bg-white/60 shadow-lg sticky top-0 w-full z-50 p-2">
+    <nav className="backdrop-blur-md bg-white/80 shadow-lg sticky top-0 w-full z-50 p-2">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -43,7 +43,7 @@ const Navbar = () => {
       </div>
 
       <div 
-        className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${
+        className={`md:hidden absolute top-full left-0 right-0 w-full backdrop-blur-md bg-white/80 shadow-lg z-50 transition-all duration-500 ease-out ${
           isOpen 
             ? 'max-h-96 opacity-100 translate-y-0 pointer-events-auto' 
             : 'max-h-0 opacity-0 -translate-y-8 pointer-events-none'
