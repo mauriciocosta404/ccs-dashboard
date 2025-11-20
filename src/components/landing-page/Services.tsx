@@ -10,6 +10,8 @@ interface ServiceDay {
   weekday: number;
   description: string | null;
   time: string;
+  endTime: string;
+  title: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -20,6 +22,7 @@ const serviceDaysApi = {
     try {
       const response = await httpClient.get<ServiceDay[]>("/service-days");
       const data = response.data;
+      console.log('Dias de culto fetched:', data);
       return data;
     } catch (error) {
       console.error("Erro ao buscar dias de culto:", error);
@@ -35,13 +38,13 @@ const Services = () => {
   // Função para converter número do dia da semana para nome
   const getWeekdayName = (weekday: number): string => {
     const weekdays = [
-      'Domingo',    // 0
-      'Segunda',    // 1
-      'Terça',      // 2
-      'Quarta',     // 3
-      'Quinta',     // 4
-      'Sexta',      // 5
-      'Sábado'      // 6
+      'Domingos',    // 0
+      'Segundas',    // 1
+      'Terças',      // 2
+      'Quartas',     // 3
+      'Quintas',     // 4
+      'Sextas',      // 5
+      'Sábados'      // 6
     ];
     return weekdays[weekday] || 'Desconhecido';
   };
@@ -155,8 +158,10 @@ const Services = () => {
                       <div className="flex items-center justify-center mb-4">
                         <Clock className="h-5 w-5 text-white mr-2" />
                         <span className="text-lg text-white">{formatTime(service.time)}</span>
+                        <span className="text-lg text-white mx-2"> às </span>
+                        <span className="text-lg text-white">{formatTime(service.endTime)}</span>
                       </div>
-                      <p className="text-white">{service.name}</p>
+                      <p className="text-white">{service.title}</p>
                       {service.description && (
                         <p className="text-sm text-gray-200 mt-2">{service.description}</p>
                       )}

@@ -22,8 +22,10 @@ interface ServiceDay {
   id: string;
   name: string;
   weekday: number;
+  title?: string;
   description?: string;
   time: string;
+  endTime: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -134,6 +136,8 @@ export default function ServiceDayList() {
       name: serviceDay.name,
       weekday: serviceDay.weekday,
       time: formatTimeForInput(serviceDay.time),
+      endTime: formatTimeForInput(serviceDay.endTime),
+      title: serviceDay.title || '',
       description: serviceDay.description || '',
     });
     openModal();
@@ -162,6 +166,8 @@ export default function ServiceDayList() {
         name: formData.name,
         weekday: formData.weekday,
         time: formData.time,
+        endTime: formData.endTime,
+        title: formData.title || null,
         description: formData.description || null,
       });
 
@@ -172,9 +178,10 @@ export default function ServiceDayList() {
       // Recarregar a lista
       const response = await httpClient.get<ServiceDay[]>("/service-days");
       setServiceDays(response.data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erro ao atualizar culto:", error);
-      toast.error(error?.response?.data?.message || "Erro ao atualizar culto. Tente novamente.");
+      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      toast.error(errorMessage || "Erro ao atualizar culto. Tente novamente.");
     } finally {
       setSaving(false);
     }
@@ -355,6 +362,27 @@ export default function ServiceDayList() {
                     id="edit-time"
                     value={formData.time || ''}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-endTime">Horário de Término</Label>
+                  <Input
+                    type="time"
+                    id="edit-endTime"
+                    value={formData.endTime || ''}
+                    onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-title">Título</Label>
+                  <Input
+                    type="text"
+                    id="edit-title"
+                    value={formData.title || ''}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    placeholder="Ex: Culto de Adoração, Reunião de Oração..."
                   />
                 </div>
 

@@ -16,6 +16,8 @@ interface ServiceDayFormData {
   name: string;
   weekday: number;
   description?: string;
+  title?: string;
+  endTime: string;
   time: string;
 }
 
@@ -23,7 +25,11 @@ interface ServiceDayDetailsProps {
   name: string;
   weekday: number;
   time: string;
+  endTime: string;
+  title: string;
   description: string;
+  onTitleChange: (value: string) => void;
+  onEndTimeChange: (value: string) => void;
   onNameChange: (value: string) => void;
   onWeekdayChange: (value: number) => void;
   onTimeChange: (value: string) => void;
@@ -58,7 +64,9 @@ export default function RegisterServiceDay() {
     name: "",
     weekday: 0,
     description: "",
-    time: ""
+    time: "",
+    endTime: "",
+    title: ""
   });
   
   // Estado para controlar o carregamento
@@ -93,7 +101,9 @@ export default function RegisterServiceDay() {
       const serviceDayData = {
         name: formData.name,
         weekday: formData.weekday,
+        title: formData.title,
         time: formData.time,
+        endTime: formData.endTime,
         ...(formData.description && { description: formData.description })
       };
 
@@ -111,7 +121,9 @@ export default function RegisterServiceDay() {
           name: "",
           weekday: 0,
           description: "",
-          time: ""
+          time: "",
+          endTime: "",
+          title: ""
         });
       }
     } catch (error: any) {
@@ -135,7 +147,11 @@ export default function RegisterServiceDay() {
             name={formData.name}
             weekday={formData.weekday}
             time={formData.time}
+            endTime={formData.endTime}
+            title={formData.title || ""}
             description={formData.description || ""}
+            onTitleChange={(value) => handleInputChange("title", value)}
+            onEndTimeChange={(value) => handleInputChange("endTime", value)}
             onNameChange={(value) => handleInputChange("name", value)}
             onWeekdayChange={(value) => handleInputChange("weekday", value)}
             onTimeChange={(value) => handleInputChange("time", value)}
@@ -153,6 +169,10 @@ function ServiceDayDetails({
   name, 
   weekday, 
   time, 
+  endTime,
+  title,
+  onTitleChange,
+  onEndTimeChange,
   description, 
   onNameChange, 
   onWeekdayChange, 
@@ -191,22 +211,39 @@ function ServiceDayDetails({
               onChange={onTimeChange} 
             />
           </div>
+
+          <div>
+            <Label htmlFor="titulo">Título</Label>
+            <Input 
+              type="text" 
+              id="titulo" 
+              value={title} 
+              onChange={(e) => onTitleChange(e.target.value)} 
+            />
+          </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-5">
           <div>
             <Label>Descrição (Opcional)</Label>
             <TextArea
               rows={5}
               value={description}
               onChange={(value: string) => onDescriptionChange(value)}
-              hint="Informe detalhes adicionais sobre o culto (opcional)."
               placeholder="Ex: Culto com louvor, pregação da palavra e oração..."
             />
           </div>
 
+          <div>
+            <Label htmlFor="horario">Horário de término</Label>
+            <TimeInput 
+              value={endTime} 
+              onChange={onEndTimeChange} 
+            />
+          </div>
+
           <Button 
-            className="w-full" 
+            className="w-full md:mt-6" 
             onClick={onSubmit}
             disabled={loading}
           >
