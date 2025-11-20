@@ -122,7 +122,7 @@ const Services = () => {
             Horários dos Cultos
           </h2>
           <p className="text-lg text-gray-600">
-            Venha nos visitar e participe dos nossos cultos
+            Venha nos visitar e participe dos nossos cultos:
           </p>
         </div>
 
