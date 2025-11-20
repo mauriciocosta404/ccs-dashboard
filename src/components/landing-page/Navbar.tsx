@@ -42,36 +42,40 @@ const Navbar = () => {
         </div>
       </div>
 
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="/#home" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Início</a>
-            <a href="/#about" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Sobre</a>
-            <a href="/#services" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Cultos</a>
-            <a href="/#events" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Eventos</a>
-            <a
-              href="/sermons"
-              className="block px-3 py-2 text-gray-700 hover:text-indigo-600"
+      <div 
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${
+          isOpen 
+            ? 'max-h-96 opacity-100 translate-y-0 pointer-events-auto' 
+            : 'max-h-0 opacity-0 -translate-y-8 pointer-events-none'
+        }`}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="/#home" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Início</a>
+          <a href="/#about" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Sobre</a>
+          <a href="/#services" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Cultos</a>
+          <a href="/#events" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Eventos</a>
+          <a
+            href="/sermons"
+            className="block px-3 py-2 text-gray-700 hover:text-indigo-600"
+          >
+            Pregações
+          </a>
+          <a
+            className="block px-3 py-2 text-gray-700 hover:text-indigo-600"
+            href='/bible' 
+          >
+            Bíblia
+          </a>
+          <a href="/#contact" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Contactos</a>
+          {/*<Link to={"/signin"}>
+            <Button
+              className="w-full flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              Pregações
-            </a>
-            <a
-              className="block px-3 py-2 text-gray-700 hover:text-indigo-600"
-              href='/bible' 
-            >
-              Bíblia
-            </a>
-            <a href="/#contact" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Contactos</a>
-            {/*<Link to={"/signin"}>
-              <Button
-                className="w-full flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-              >
-                Sign in
-              </Button>
-            </Link>*/}
-          </div>
+              Sign in
+            </Button>
+          </Link>*/}
         </div>
-      )}
+      </div>
     </nav>
   );
 };
