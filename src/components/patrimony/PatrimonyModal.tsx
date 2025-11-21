@@ -355,7 +355,7 @@ export default function PatrimonyModal({
                     type="number"
                     name="acquisitionValue"
                     placeholder="0.00"
-                    step="0.01"
+                    step={0.01}
                     value={formData.acquisitionValue || ""}
                     onChange={handleNumberChange}
                     disabled={loading}
