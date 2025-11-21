@@ -141,7 +141,7 @@ export default function PatrimonyList() {
                     if (patrimonies.length === 0) {
                       return (
                         <TableRow>
-                          <TableCell colSpan={8} className="px-5 py-4 text-center text-gray-500 dark:text-gray-400">
+                          <TableCell className="px-5 py-4 text-center text-gray-500 dark:text-gray-400">
                             Não há patrimônios cadastrados.
                           </TableCell>
                         </TableRow>
