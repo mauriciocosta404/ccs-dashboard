@@ -40,6 +40,7 @@ import RegisterEbdStudents from "./pages/ebd/register-students";
 import { Sermons } from "./pages/sermons";
 import TermsAndConditions from "./pages/terms-and-conditions";
 import MinistryDetails from "./pages/ministry/MinistryDetails";
+import PatrimonyList from "./pages/patrimony/PatrimonyList";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -93,6 +94,9 @@ export default function App() {
 
               {/* Ministry */}
               <Route path="/ministery/:id" element={<PrivateRoute  children={<MinistryDetails />}/>} />
+
+              {/* Patrimony */}
+              <Route path="/patrimonies" element={<PrivateRoute  children={<PatrimonyList />}/>} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />

@@ -12,6 +12,7 @@ import {
   TimeIcon,
   UserCircleIcon,
   VideoIcon,
+  BoxIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { AlignLeft, Users } from "lucide-react";
@@ -145,6 +146,13 @@ const AppSidebar: React.FC = () => {
         //{ name: "Ver professores", path: "/teachers", pro: false },
         { name: "Ver alunos", path: "/students", pro: false },
         { name: "Criar aluno", path: "/register-student", pro: false },
+      ],
+    },
+    {
+      name: "Patrimônio",
+      icon: <BoxIcon/>,
+      subItems: [
+        { name: "Ver patrimônios", path: "/patrimonies", pro: false },
       ],
     },
   ];
