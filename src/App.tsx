@@ -41,6 +41,7 @@ import { Sermons } from "./pages/sermons";
 import TermsAndConditions from "./pages/terms-and-conditions";
 import MinistryDetails from "./pages/ministry/MinistryDetails";
 import PatrimonyList from "./pages/patrimony/PatrimonyList";
+import MovementList from "./pages/movements/MovementList";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -97,6 +98,9 @@ export default function App() {
 
               {/* Patrimony */}
               <Route path="/patrimonies" element={<PrivateRoute  children={<PatrimonyList />}/>} />
+
+              {/* Movements */}
+              <Route path="/movements" element={<PrivateRoute  children={<MovementList />}/>} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />

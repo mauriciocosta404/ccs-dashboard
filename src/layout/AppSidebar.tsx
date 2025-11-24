@@ -153,6 +153,7 @@ const AppSidebar: React.FC = () => {
       icon: <BoxIcon/>,
       subItems: [
         { name: "Ver patrimônios", path: "/patrimonies", pro: false },
+        { name: "Movimentos de patrimônios", path: "/movements", pro: false },
       ],
     },
   ];
