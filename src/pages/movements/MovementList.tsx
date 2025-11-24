@@ -80,7 +80,7 @@ export default function MovementList() {
     }
   };
 
-  const getMovementTypeColor = (type: string) => {
+  const getMovementTypeColor = (type: string): "primary" | "success" | "error" | "warning" | "info" | "light" | "dark" => {
     switch (type) {
       case "ENTRADA":
         return "success";
@@ -93,7 +93,7 @@ export default function MovementList() {
       case "BAIXA":
         return "error";
       default:
-        return "default";
+        return "primary";
     }
   };
 
@@ -184,7 +184,7 @@ export default function MovementList() {
                     if (movements.length === 0) {
                       return (
                         <TableRow>
-                          <TableCell colSpan={9} className="px-5 py-4 text-center text-gray-500 dark:text-gray-400">
+                          <TableCell className="px-5 py-4 text-center text-gray-500 dark:text-gray-400">
                             Não há movimentos cadastrados.
                           </TableCell>
                         </TableRow>

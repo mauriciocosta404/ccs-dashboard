@@ -62,8 +62,14 @@ export default function MovementModal({
 
   useEffect(() => {
     if (movement && isEditMode) {
+      let formattedDate = "";
+      if (movement.date) {
+        formattedDate = typeof movement.date === 'string' 
+          ? movement.date 
+          : new Date(movement.date).toISOString().split('T')[0];
+      }
       setFormData({
-        date: movement.date ? (typeof movement.date === 'string' ? movement.date : new Date(movement.date).toISOString().split('T')[0]) : "",
+        date: formattedDate,
         patrimonyId: movement.patrimonyId || "",
         assetName: movement.assetName || "",
         movementType: movement.movementType || "ENTRADA",
@@ -251,7 +257,6 @@ export default function MovementModal({
                     Tipo de Movimento <span className="text-error-500">*</span>
                   </Label>
                   <Select
-                    id="movementType"
                     name="movementType"
                     value={formData.movementType}
                     onChange={(value) => handleSelectChange("movementType", value)}
@@ -284,7 +289,6 @@ export default function MovementModal({
                 <div>
                   <Label htmlFor="patrimonyId">Patrimônio</Label>
                   <Select
-                    id="patrimonyId"
                     name="patrimonyId"
                     value={formData.patrimonyId || ""}
                     onChange={(value) => handleSelectChange("patrimonyId", value)}
@@ -423,7 +427,6 @@ export default function MovementModal({
                 <div>
                   <Label htmlFor="obs">Observação Rápida</Label>
                   <TextArea
-                    id="obs"
                     placeholder="Observação breve"
                     value={formData.obs}
                     onChange={(value) => handleTextAreaChange(value, "obs")}
@@ -436,7 +439,6 @@ export default function MovementModal({
                 <div>
                   <Label htmlFor="observations">Observações Detalhadas</Label>
                   <TextArea
-                    id="observations"
                     placeholder="Observações detalhadas sobre o movimento"
                     value={formData.observations}
                     onChange={(value) => handleTextAreaChange(value, "observations")}
@@ -459,7 +461,10 @@ export default function MovementModal({
               Cancelar
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? "Salvando..." : isEditMode ? "Atualizar" : "Salvar"}
+              {(() => {
+                if (loading) return "Salvando...";
+                return isEditMode ? "Atualizar" : "Salvar";
+              })()}
             </Button>
           </div>
         </form>
