@@ -161,6 +161,7 @@ export default function SignInForm() {
                 </div>
                 <div>
                   <Button 
+                    type="submit"
                     disabled={disabled || loading}
                     size="sm"
                     className={`w-full ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
