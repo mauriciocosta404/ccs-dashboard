@@ -35,6 +35,7 @@ export default function PatrimonyModal({
     acquisitionDate: "",
     acquisitionValue: undefined,
     condition: "Novo",
+    quantity: undefined,
     currentLocation: "",
     responsible: "",
     resourceSource: "",
@@ -54,6 +55,7 @@ export default function PatrimonyModal({
         acquisitionDate: patrimony.acquisitionDate ? new Date(patrimony.acquisitionDate).toISOString().split('T')[0] : "",
         acquisitionValue: patrimony.acquisitionValue,
         condition: patrimony.condition || "Novo",
+        quantity: patrimony.quantity,
         currentLocation: patrimony.currentLocation || "",
         responsible: patrimony.responsible || "",
         resourceSource: patrimony.resourceSource || "",
@@ -70,6 +72,7 @@ export default function PatrimonyModal({
         acquisitionDate: "",
         acquisitionValue: undefined,
         condition: "Novo",
+        quantity: undefined,
         currentLocation: "",
         responsible: "",
         resourceSource: "",
@@ -144,6 +147,7 @@ export default function PatrimonyModal({
       if (formData.acquisitionDate) formDataToSend.append("acquisitionDate", formData.acquisitionDate);
       if (formData.acquisitionValue !== undefined) formDataToSend.append("acquisitionValue", formData.acquisitionValue.toString());
       formDataToSend.append("condition", formData.condition);
+      if (formData.quantity !== undefined) formDataToSend.append("quantity", formData.quantity.toString());
       if (formData.currentLocation) formDataToSend.append("currentLocation", formData.currentLocation);
       if (formData.responsible) formDataToSend.append("responsible", formData.responsible);
       if (formData.resourceSource) formDataToSend.append("resourceSource", formData.resourceSource);
@@ -178,6 +182,7 @@ export default function PatrimonyModal({
         acquisitionDate: "",
         acquisitionValue: undefined,
         condition: "Novo",
+        quantity: undefined,
         currentLocation: "",
         responsible: "",
         resourceSource: "",
@@ -210,6 +215,7 @@ export default function PatrimonyModal({
         acquisitionDate: "",
         acquisitionValue: undefined,
         condition: "Novo",
+        quantity: undefined,
         currentLocation: "",
         responsible: "",
         resourceSource: "",
@@ -323,6 +329,22 @@ export default function PatrimonyModal({
                       onChange={(value) => handleSelectChange("condition", value)}
                     />
                   </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="quantity">Quantidade</Label>
+                  <Input
+                    id="quantity"
+                    type="number"
+                    name="quantity"
+                    placeholder="0"
+                    min="0"
+                    step={1}
+                    value={formData.quantity || ""}
+                    onChange={handleNumberChange}
+                    disabled={loading}
+                    className="mt-1.5"
+                  />
                 </div>
               </div>
             </div>
@@ -455,7 +477,7 @@ export default function PatrimonyModal({
             >
               Cancelar
             </button>
-            <Button size="sm" disabled={loading}>
+            <Button type="submit" size="sm" disabled={loading}>
               {(() => {
                 if (loading) return "Salvando...";
                 if (isEditMode) return "Atualizar";

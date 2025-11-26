@@ -111,6 +111,9 @@ export default function PatrimonyList() {
                       Condição
                     </TableCell>
                     <TableCell isHeader className="px-5 py-3 text-start font-medium text-gray-500 dark:text-gray-400">
+                      Quantidade
+                    </TableCell>
+                    <TableCell isHeader className="px-5 py-3 text-start font-medium text-gray-500 dark:text-gray-400">
                       Valor
                     </TableCell>
                     <TableCell isHeader className="px-5 py-3 text-start font-medium text-gray-500 dark:text-gray-400">
@@ -131,6 +134,7 @@ export default function PatrimonyList() {
                           <TableCell className="px-5 py-4"><Skeleton variant="text" width={100} height={20} /></TableCell>
                           <TableCell className="px-5 py-4"><Skeleton variant="text" width={150} height={20} /></TableCell>
                           <TableCell className="px-5 py-4"><Skeleton variant="text" width={120} height={20} /></TableCell>
+                          <TableCell className="px-5 py-4"><Skeleton variant="text" width={80} height={20} /></TableCell>
                           <TableCell className="px-5 py-4"><Skeleton variant="text" width={80} height={20} /></TableCell>
                           <TableCell className="px-5 py-4"><Skeleton variant="text" width={100} height={20} /></TableCell>
                           <TableCell className="px-5 py-4"><Skeleton variant="text" width={120} height={20} /></TableCell>
@@ -181,6 +185,9 @@ export default function PatrimonyList() {
                           <Badge color={patrimony.condition === 'Novo' ? 'success' : 'warning'}>
                             {patrimony.condition}
                           </Badge>
+                        </TableCell>
+                        <TableCell className="px-5 py-4 text-start text-gray-600 dark:text-gray-400">
+                          {patrimony.quantity ?? "-"}
                         </TableCell>
                         <TableCell className="px-5 py-4 text-start text-gray-600 dark:text-gray-400">
                           {formatCurrency(patrimony.acquisitionValue)}
