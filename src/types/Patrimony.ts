@@ -7,6 +7,7 @@ export interface Patrimony {
   acquisitionDate?: string;
   acquisitionValue?: number;
   condition: string; // 'Novo' | 'Usado'
+  quantity?: number;
   currentLocation?: string;
   responsible?: string;
   resourceSource?: string;
@@ -24,6 +25,7 @@ export interface CreatePatrimonyRequest {
   acquisitionDate?: string;
   acquisitionValue?: number;
   condition: string;
+  quantity?: number;
   currentLocation?: string;
   responsible?: string;
   resourceSource?: string;
@@ -38,6 +40,7 @@ export interface UpdatePatrimonyRequest {
   acquisitionDate?: string;
   acquisitionValue?: number;
   condition?: string;
+  quantity?: number;
   currentLocation?: string;
   responsible?: string;
   resourceSource?: string;
