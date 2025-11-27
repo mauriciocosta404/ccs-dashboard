@@ -135,7 +135,7 @@ const AppSidebar: React.FC = () => {
       name: "Pregações",
       icon: <VideoIcon/>,
       subItems: [
-        { name: "Ver", path: "/sermons", pro: false },
+        { name: "Ver", path: "/sermons-list", pro: false },
         { name: "Criar", path: "/register-sermon", pro: false },
       ],
     },

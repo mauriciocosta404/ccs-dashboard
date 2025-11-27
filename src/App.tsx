@@ -88,7 +88,7 @@ export default function App() {
               <Route path="/service-days" element={<PrivateRoute  children={<ServiceDayList />}/>} />
 
               <Route path="/register-sermon" element={<PrivateRoute  children={<RegisterSermon />}/>} />
-              <Route path="/sermons" element={<PrivateRoute  children={<SermonsList />}/>} />
+              <Route path="/sermons-list" element={<PrivateRoute  children={<SermonsList />}/>} />
 
               <Route path="/students" element={<PrivateRoute  children={<EbdStudentsList />}/>} />
               {/* <Route path="/teachers" element={<PrivateRoute  children={<EbdTeachersList />}/>} /> */}
