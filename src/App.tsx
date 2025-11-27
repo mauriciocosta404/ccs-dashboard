@@ -41,6 +41,7 @@ import { Sermons } from "./pages/sermons";
 import TermsAndConditions from "./pages/terms-and-conditions";
 import MinistryDetails from "./pages/ministry/MinistryDetails";
 import PatrimonyList from "./pages/patrimony/PatrimonyList";
+import InventoryList from "./pages/patrimony/InventoryList";
 import MovementList from "./pages/movements/MovementList";
 
 export default function App() {
@@ -98,6 +99,7 @@ export default function App() {
 
               {/* Patrimony */}
               <Route path="/patrimonies" element={<PrivateRoute  children={<PatrimonyList />}/>} />
+              <Route path="/inventory" element={<PrivateRoute  children={<InventoryList />}/>} />
 
               {/* Movements */}
               <Route path="/movements" element={<PrivateRoute  children={<MovementList />}/>} />
