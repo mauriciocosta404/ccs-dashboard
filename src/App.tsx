@@ -40,6 +40,7 @@ import RegisterEbdStudents from "./pages/ebd/register-students";
 import { Sermons } from "./pages/sermons";
 import TermsAndConditions from "./pages/terms-and-conditions";
 import MinistryDetails from "./pages/ministry/MinistryDetails";
+import SectorDetails from "./pages/sector/SectorDetails";
 import PatrimonyList from "./pages/patrimony/PatrimonyList";
 import InventoryList from "./pages/patrimony/InventoryList";
 import MovementList from "./pages/movements/MovementList";
@@ -96,6 +97,9 @@ export default function App() {
 
               {/* Ministry */}
               <Route path="/ministery/:id" element={<PrivateRoute  children={<MinistryDetails />}/>} />
+
+              {/* Sector */}
+              <Route path="/sector/:id" element={<PrivateRoute  children={<SectorDetails />}/>} />
 
               {/* Patrimony */}
               <Route path="/patrimonies" element={<PrivateRoute  children={<PatrimonyList />}/>} />

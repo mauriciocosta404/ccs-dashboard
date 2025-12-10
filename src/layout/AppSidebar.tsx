@@ -18,6 +18,7 @@ import { useSidebar } from "../context/SidebarContext";
 import { AlignLeft, Users } from "lucide-react";
 import useAuth from "../auth/useAuth";
 import CreateMinistryModal from "../components/ministry/CreateMinistryModal";
+import CreateSectorModal from "../components/sector/CreateSectorModal";
 import httpClient from "../api/httpClient";
 
 type NavItem = {
@@ -48,7 +49,9 @@ const AppSidebar: React.FC = () => {
   );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [isCreateMinistryModalOpen, setIsCreateMinistryModalOpen] = useState(false);
+  const [isCreateSectorModalOpen, setIsCreateSectorModalOpen] = useState(false);
   const [ministries, setMinistries] = useState<Array<{ id: string; name: string }>>([]);
+  const [sectors, setSectors] = useState<Array<{ id: string; name: string }>>([]);
 
   const isActive = useCallback(
     (path: string) => location.pathname === path,
@@ -66,10 +69,22 @@ const AppSidebar: React.FC = () => {
     }
   }, []);
 
-  // Carregar ministérios ao montar o componente
+  // Buscar sectors da API
+  const fetchSectors = useCallback(async () => {
+    try {
+      const response = await httpClient.get<Array<{ id: string; name: string }>>("/sectors");
+      setSectors(response.data || []);
+    } catch (error) {
+      console.error("Erro ao buscar sectors:", error);
+      setSectors([]);
+    }
+  }, []);
+
+  // Carregar ministérios e sectors ao montar o componente
   useEffect(() => {
     fetchMinistries();
-  }, [fetchMinistries]);
+    fetchSectors();
+  }, [fetchMinistries, fetchSectors]);
 
   // Definir navItems dentro do componente para ter acesso a ministries
   const navItems: NavItem[] = [
@@ -111,6 +126,18 @@ const AppSidebar: React.FC = () => {
         ...ministries.map((ministry) => ({
           name: ministry.name,
           path: `/ministery/${ministry.id}`,
+          pro: false,
+        })),
+      ],
+    },
+    {
+      name: "Sectores",
+      icon: <UserCircleIcon/>,
+      subItems: [
+        { name: "Criar Sector", onClick: () => setIsCreateSectorModalOpen(true) },
+        ...sectors.map((sector) => ({
+          name: sector.name,
+          path: `/sector/${sector.id}`,
           pro: false,
         })),
       ],
@@ -439,6 +466,11 @@ const othersItems: NavItem[] = [
         isOpen={isCreateMinistryModalOpen}
         onClose={() => setIsCreateMinistryModalOpen(false)}
         onSuccess={fetchMinistries}
+      />
+      <CreateSectorModal
+        isOpen={isCreateSectorModalOpen}
+        onClose={() => setIsCreateSectorModalOpen(false)}
+        onSuccess={fetchSectors}
       />
     </aside>
   );
