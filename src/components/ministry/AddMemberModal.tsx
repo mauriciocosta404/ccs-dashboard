@@ -146,6 +146,7 @@ export default function AddMemberModal({
             </button>
             <Button
               size="sm"
+              type="submit"
               disabled={loading || loadingUsers || !selectedUserId}
             >
               {loading ? "Adicionando..." : "Adicionar Membro"}

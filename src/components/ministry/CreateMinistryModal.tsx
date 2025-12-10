@@ -111,6 +111,7 @@ export default function CreateMinistryModal({
             <Button
               size="sm"
               disabled={loading}
+              type="submit"
             >
               {loading ? "Criando..." : "Criar Ministério"}
             </Button>
