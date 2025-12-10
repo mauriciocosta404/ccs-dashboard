@@ -12,6 +12,9 @@ import httpClient from "../../api/httpClient";
 import ComponentCard from "../../components/common/ComponentCard";
 import Button from "../../components/ui/button/Button";
 import AddMemberModal from "../../components/members/AddMemberModal";
+import { Edit, Trash } from "lucide-react";
+import { toast } from "react-toastify";
+import { User } from "../../types/User";
 
 interface Member {
   id: string;
@@ -26,6 +29,7 @@ export default function Members() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
+  const [editingMember, setEditingMember] = useState<User | null>(null);
 
   const fetchMembers = async () => {
     setLoading(true);
@@ -42,6 +46,42 @@ export default function Members() {
   useEffect(() => {
     fetchMembers();
   }, []);
+
+  const handleDelete = async (memberId: string, memberName: string) => {
+    if (!confirm(`Tem certeza que deseja excluir o membro ${memberName}?`)) {
+      return;
+    }
+
+    try {
+      await httpClient.delete(`/users/${memberId}`);
+      setMembers(prev => prev.filter(member => member.id !== memberId));
+      toast.success("Membro excluído com sucesso!");
+    } catch (error: unknown) {
+      const errorMessage =
+        (error as { response?: { data?: { message?: string } }; message?: string })?.response?.data?.message ||
+        (error as { message?: string })?.message ||
+        "Erro ao excluir membro. Tente novamente.";
+      toast.error(errorMessage);
+      console.error("Erro ao excluir membro:", error);
+    }
+  };
+
+  const handleEdit = async (member: Member) => {
+    try {
+      // Buscar dados completos do usuário
+      const response = await httpClient.get<User>(`/users/${member.id}`);
+      setEditingMember(response.data);
+      setIsAddMemberModalOpen(true);
+    } catch (error) {
+      console.error("Erro ao buscar dados do membro:", error);
+      toast.error("Erro ao carregar dados do membro para edição");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsAddMemberModalOpen(false);
+    setEditingMember(null);
+  };
 
   return (
     <>
@@ -72,6 +112,9 @@ export default function Members() {
                     <TableCell isHeader className="px-5 py-3 text-start font-medium text-gray-500 dark:text-gray-400">
                     Status
                     </TableCell>
+                    <TableCell isHeader className="px-5 py-3 text-start font-medium text-gray-500 dark:text-gray-400">
+                    Ações
+                    </TableCell>
                 </TableRow>
                 </TableHeader>
 
@@ -89,8 +132,11 @@ export default function Members() {
                     // ❌ Nenhum membro
                     <TableRow>
                     <TableCell className="px-5 py-4 text-center text-gray-500 dark:text-gray-400">
-                        Não há membros não batizados.
+                        Não há membros cadastrados.
                     </TableCell>
+                    <TableCell className="px-5 py-4">{""}</TableCell>
+                    <TableCell className="px-5 py-4">{""}</TableCell>
+                    <TableCell className="px-5 py-4">{""}</TableCell>
                     </TableRow>
                 ) : (
                     // ✅ Dados reais
@@ -108,6 +154,24 @@ export default function Members() {
                           {member.role == 'MEMBRO_NAO_BAPTIZADO' ? 'Baptizado' : 'Não baptizado'}
                         </Badge>
                         </TableCell>
+                        <TableCell className="px-5 py-4 text-start">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleEdit(member)}
+                              className="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                              title="Editar membro"
+                            >
+                              <Edit size={16} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(member.id, member.name)}
+                              className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                              title="Excluir membro"
+                            >
+                              <Trash size={16} />
+                            </button>
+                          </div>
+                        </TableCell>
                     </TableRow>
                     ))
                 )}
@@ -119,8 +183,9 @@ export default function Members() {
       </ComponentCard>
       <AddMemberModal
         isOpen={isAddMemberModalOpen}
-        onClose={() => setIsAddMemberModalOpen(false)}
+        onClose={handleCloseModal}
         onSuccess={fetchMembers}
+        editingMember={editingMember}
       />
     </>
   );

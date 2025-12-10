@@ -1,23 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Modal } from "../ui/modal";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import Button from "../ui/button/Button";
 import Select from "../form/Select";
+import Checkbox from "../form/input/Checkbox";
 import httpClient from "../../api/httpClient";
 import { toast } from "react-toastify";
+import { User } from "../../types/User";
 
 interface AddMemberModalProps {
   readonly isOpen: boolean;
   readonly onClose: () => void;
   readonly onSuccess?: () => void;
+  readonly editingMember?: User | null;
 }
 
 export default function AddMemberModal({
   isOpen,
   onClose,
   onSuccess,
+  editingMember,
 }: AddMemberModalProps) {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -36,6 +40,135 @@ export default function AddMemberModal({
     instagram: "",
   });
   const [loading, setLoading] = useState(false);
+  const [sectors, setSectors] = useState<Array<{ id: string; name: string }>>([]);
+  const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
+  const [loadingSectors, setLoadingSectors] = useState(false);
+  const [ministries, setMinistries] = useState<Array<{ id: string; name: string }>>([]);
+  const [selectedMinistries, setSelectedMinistries] = useState<string[]>([]);
+  const [loadingMinistries, setLoadingMinistries] = useState(false);
+
+  // Preencher formulário quando estiver editando
+  useEffect(() => {
+    if (editingMember && isOpen) {
+      const nameParts = editingMember.name.split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+      
+      setFormData({
+        firstName,
+        lastName,
+        email: editingMember.email || "",
+        role: editingMember.role || "MEMBRO_NAO_BAPTIZADO",
+        phone: editingMember.phone || "",
+        bio: editingMember.bio || "",
+        address: editingMember.address || "",
+        country: editingMember.country || "",
+        city: editingMember.city || "",
+        marital_status: editingMember.marital_status || "",
+        facebook: editingMember.facebook || "",
+        twitter: editingMember.twitter || "",
+        linkedin: editingMember.linkedin || "",
+        instagram: editingMember.instagram || "",
+      });
+
+      // Buscar sectors e ministérios do usuário
+      fetchUserSectorsAndMinistries(editingMember.id);
+    } else if (isOpen && !editingMember) {
+      // Resetar formulário quando criar novo
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        role: "MEMBRO_NAO_BAPTIZADO",
+        phone: "",
+        bio: "",
+        address: "",
+        country: "",
+        city: "",
+        marital_status: "",
+        facebook: "",
+        twitter: "",
+        linkedin: "",
+        instagram: "",
+      });
+      setSelectedSectors([]);
+      setSelectedMinistries([]);
+    }
+  }, [editingMember, isOpen]);
+
+  // Buscar sectors e ministérios quando o modal abrir
+  useEffect(() => {
+    if (isOpen) {
+      fetchSectors();
+      fetchMinistries();
+    }
+  }, [isOpen]);
+
+  const fetchUserSectorsAndMinistries = async (userId: string) => {
+    try {
+      // Buscar todos os sectors e verificar quais o usuário pertence
+      const sectorsResponse = await httpClient.get<Array<{ id: string; name: string; users?: User[] }>>("/sectors");
+      const userSectors = sectorsResponse.data
+        .filter(sector => sector.users?.some(u => u.id === userId))
+        .map(sector => sector.id);
+      setSelectedSectors(userSectors);
+
+      // Buscar todos os ministérios e verificar quais o usuário pertence
+      const ministriesResponse = await httpClient.get<Array<{ id: string; name: string; users?: User[] }>>("/ministeries");
+      const userMinistries = ministriesResponse.data
+        .filter(ministry => ministry.users?.some(u => u.id === userId))
+        .map(ministry => ministry.id);
+      setSelectedMinistries(userMinistries);
+    } catch (error) {
+      console.error("Erro ao buscar sectors e ministérios do usuário:", error);
+    }
+  };
+
+  const fetchSectors = async () => {
+    setLoadingSectors(true);
+    try {
+      const response = await httpClient.get<Array<{ id: string; name: string }>>("/sectors");
+      setSectors(response.data || []);
+    } catch (error) {
+      console.error("Erro ao buscar sectors:", error);
+      toast.error("Erro ao carregar lista de sectors");
+    } finally {
+      setLoadingSectors(false);
+    }
+  };
+
+  const fetchMinistries = async () => {
+    setLoadingMinistries(true);
+    try {
+      const response = await httpClient.get<Array<{ id: string; name: string }>>("/ministeries");
+      setMinistries(response.data || []);
+    } catch (error) {
+      console.error("Erro ao buscar ministérios:", error);
+      toast.error("Erro ao carregar lista de ministérios");
+    } finally {
+      setLoadingMinistries(false);
+    }
+  };
+
+  const handleSectorToggle = (sectorId: string) => {
+    setSelectedSectors((prev) => {
+      if (prev.includes(sectorId)) {
+        return prev.filter((id) => id !== sectorId);
+      } else {
+        return [...prev, sectorId];
+      }
+    });
+  };
+
+  const handleMinistryToggle = (ministryId: string) => {
+    setSelectedMinistries((prev) => {
+      if (prev.includes(ministryId)) {
+        return prev.filter((id) => id !== ministryId);
+      } else {
+        return [...prev, ministryId];
+      }
+    });
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -73,9 +206,13 @@ export default function AddMemberModal({
       const userData: Record<string, string> = {
         name: fullName,
         email: formData.email,
-        senha: "root", // Senha padrão
         role: formData.role,
       };
+
+      // Não incluir senha na edição
+      if (!editingMember) {
+        userData.senha = "root"; // Senha padrão apenas na criação
+      }
 
       // Adicionar campos opcionais apenas se preenchidos
       if (formData.phone) userData.phone = formData.phone;
@@ -89,9 +226,122 @@ export default function AddMemberModal({
       if (formData.linkedin) userData.linkedin = formData.linkedin;
       if (formData.instagram) userData.instagram = formData.instagram;
 
-      await httpClient.post("/users", userData);
+      let userId: string;
 
-      toast.success("Membro cadastrado com sucesso!");
+      if (editingMember) {
+        // Modo de edição - fazer PATCH
+        await httpClient.patch(`/users/${editingMember.id}`, userData);
+        userId = editingMember.id;
+        toast.success("Membro atualizado com sucesso!");
+
+        // Atualizar sectors do usuário
+        try {
+          // Buscar sectors atuais do usuário
+          const sectorsResponse = await httpClient.get<Array<{ id: string; name: string; users?: User[] }>>("/sectors");
+          const currentSectors = sectorsResponse.data
+            .filter(sector => sector.users?.some(u => u.id === userId))
+            .map(sector => sector.id);
+
+          // Remover dos sectors que não estão mais selecionados
+          const sectorsToRemove = currentSectors.filter(id => !selectedSectors.includes(id));
+          await Promise.all(
+            sectorsToRemove.map(sectorId =>
+              httpClient.delete(`/sectors/${sectorId}/membros/${userId}`)
+            )
+          );
+
+          // Adicionar aos sectors novos
+          const sectorsToAdd = selectedSectors.filter(id => !currentSectors.includes(id));
+          await Promise.all(
+            sectorsToAdd.map(sectorId =>
+              httpClient.post(`/sectors/${sectorId}/membros`, { userId })
+            )
+          );
+        } catch (sectorError) {
+          console.error("Erro ao atualizar sectors do usuário:", sectorError);
+          toast.warning("Membro atualizado, mas houve erro ao atualizar alguns sectors");
+        }
+
+        // Atualizar ministérios do usuário
+        try {
+          // Buscar ministérios atuais do usuário
+          const ministriesResponse = await httpClient.get<Array<{ id: string; name: string; users?: User[] }>>("/ministeries");
+          const currentMinistries = ministriesResponse.data
+            .filter(ministry => ministry.users?.some(u => u.id === userId))
+            .map(ministry => ministry.id);
+
+          // Remover dos ministérios que não estão mais selecionados
+          const ministriesToRemove = currentMinistries.filter(id => !selectedMinistries.includes(id));
+          await Promise.all(
+            ministriesToRemove.map(ministryId =>
+              httpClient.delete(`/ministerios/${ministryId}/membros/${userId}`)
+            )
+          );
+
+          // Adicionar aos ministérios novos
+          const ministriesToAdd = selectedMinistries.filter(id => !currentMinistries.includes(id));
+          await Promise.all(
+            ministriesToAdd.map(ministryId =>
+              httpClient.post(`/ministerios/${ministryId}/membros`, { userId })
+            )
+          );
+        } catch (ministryError) {
+          console.error("Erro ao atualizar ministérios do usuário:", ministryError);
+          toast.warning("Membro atualizado, mas houve erro ao atualizar alguns ministérios");
+        }
+      } else {
+        // Modo de criação - fazer POST
+        const response = await httpClient.post("/users", userData);
+        // Tentar obter o ID do usuário de diferentes formatos de resposta
+        const newUserId = response.data?.id || response.data?.user?.id || (response.data as { id?: string })?.id;
+
+        // Se não conseguiu o ID diretamente, buscar pelo email
+        userId = newUserId || "";
+        if (!userId) {
+          try {
+            const usersResponse = await httpClient.get<User[]>("/users");
+            const createdUser = usersResponse.data.find((u) => u.email === formData.email);
+            userId = createdUser?.id || "";
+          } catch (fetchError) {
+            console.error("Erro ao buscar usuário criado:", fetchError);
+          }
+        }
+
+        // Adicionar usuário aos sectors selecionados
+        if (userId && selectedSectors.length > 0) {
+          try {
+            await Promise.all(
+              selectedSectors.map((sectorId) =>
+                httpClient.post(`/sectors/${sectorId}/membros`, {
+                  userId: userId,
+                })
+              )
+            );
+          } catch (sectorError) {
+            console.error("Erro ao adicionar usuário aos sectors:", sectorError);
+            toast.warning("Usuário criado, mas houve erro ao adicionar a alguns sectors");
+          }
+        }
+
+        // Adicionar usuário aos ministérios selecionados
+        if (userId && selectedMinistries.length > 0) {
+          try {
+            await Promise.all(
+              selectedMinistries.map((ministryId) =>
+                httpClient.post(`/ministerios/${ministryId}/membros`, {
+                  userId: userId,
+                })
+              )
+            );
+          } catch (ministryError) {
+            console.error("Erro ao adicionar usuário aos ministérios:", ministryError);
+            toast.warning("Usuário criado, mas houve erro ao adicionar a alguns ministérios");
+          }
+        }
+
+        toast.success("Membro cadastrado com sucesso!");
+      }
+
       // Resetar formulário
       setFormData({
         firstName: "",
@@ -109,6 +359,8 @@ export default function AddMemberModal({
         linkedin: "",
         instagram: "",
       });
+      setSelectedSectors([]);
+      setSelectedMinistries([]);
       onClose();
       if (onSuccess) {
         onSuccess();
@@ -142,6 +394,8 @@ export default function AddMemberModal({
         linkedin: "",
         instagram: "",
       });
+      setSelectedSectors([]);
+      setSelectedMinistries([]);
       onClose();
     }
   };
@@ -172,10 +426,12 @@ export default function AddMemberModal({
       <div className="no-scrollbar relative w-full overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
         <div className="px-2 pr-14">
           <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-            Adicionar Membro
+            {editingMember ? "Editar Membro" : "Adicionar Membro"}
           </h4>
           <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-            Preencha os dados do novo membro. A senha padrão será "root".
+            {editingMember 
+              ? "Edite os dados do membro."
+              : "Preencha os dados do novo membro. A senha padrão será \"root\"."}
           </p>
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -405,6 +661,62 @@ export default function AddMemberModal({
                 </div>
               </div>
             </div>
+
+            <div className="mt-7">
+              <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
+                Sectores
+              </h5>
+
+              <div className="space-y-3">
+                {loadingSectors ? (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Carregando sectors...</p>
+                ) : sectors.length === 0 ? (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Nenhum sector disponível. Crie um sector primeiro.
+                  </p>
+                ) : (
+                  sectors.map((sector) => (
+                    <div key={sector.id} className="flex items-center">
+                      <Checkbox
+                        id={`sector-${sector.id}`}
+                        checked={selectedSectors.includes(sector.id)}
+                        onChange={() => handleSectorToggle(sector.id)}
+                        disabled={loading}
+                        label={sector.name}
+                      />
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="mt-7">
+              <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
+                Ministérios
+              </h5>
+
+              <div className="space-y-3">
+                {loadingMinistries ? (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Carregando ministérios...</p>
+                ) : ministries.length === 0 ? (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Nenhum ministério disponível. Crie um ministério primeiro.
+                  </p>
+                ) : (
+                  ministries.map((ministry) => (
+                    <div key={ministry.id} className="flex items-center">
+                      <Checkbox
+                        id={`ministry-${ministry.id}`}
+                        checked={selectedMinistries.includes(ministry.id)}
+                        onChange={() => handleMinistryToggle(ministry.id)}
+                        disabled={loading}
+                        label={ministry.name}
+                      />
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
           <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
             <button
@@ -415,8 +727,10 @@ export default function AddMemberModal({
             >
               Close
             </button>
-            <Button size="sm" disabled={loading}>
-              {loading ? "Cadastrando..." : "Cadastrar Membro"}
+            <Button type="submit" size="sm" disabled={loading}>
+              {loading 
+                ? (editingMember ? "Atualizando..." : "Cadastrando...") 
+                : (editingMember ? "Atualizar Membro" : "Cadastrar Membro")}
             </Button>
           </div>
         </form>
