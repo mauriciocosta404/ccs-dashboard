@@ -44,6 +44,7 @@ import SectorDetails from "./pages/sector/SectorDetails";
 import PatrimonyList from "./pages/patrimony/PatrimonyList";
 import InventoryList from "./pages/patrimony/InventoryList";
 import MovementList from "./pages/movements/MovementList";
+import SettingsList from "./pages/settings/SettingsList";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -107,6 +108,9 @@ export default function App() {
 
               {/* Movements */}
               <Route path="/movements" element={<PrivateRoute  children={<MovementList />}/>} />
+
+              {/* Settings */}
+              <Route path="/settings" element={<PrivateRoute  children={<SettingsList />}/>} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />

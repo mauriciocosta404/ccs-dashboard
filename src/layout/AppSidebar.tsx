@@ -15,7 +15,7 @@ import {
   BoxIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
-import { AlignLeft, Users } from "lucide-react";
+import { AlignLeft, Users, Settings as SettingsIcon } from "lucide-react";
 import useAuth from "../auth/useAuth";
 import CreateMinistryModal from "../components/ministry/CreateMinistryModal";
 import CreateSectorModal from "../components/sector/CreateSectorModal";
@@ -183,6 +183,11 @@ const AppSidebar: React.FC = () => {
         { name: "Inventário", path: "/inventory", pro: false },
         { name: "Movimentos de patrimônios", path: "/movements", pro: false },
       ],
+    },
+    {
+      name: "Configurações",
+      icon: <SettingsIcon/>,
+      path: "/settings",
     },
   ];
 
